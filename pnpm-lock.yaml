@@ -46,6 +46,9 @@ devDependencies:
   '@vue/tsconfig':
     specifier: ^0.4.0
     version: registry.npmmirror.com/@vue/tsconfig@0.4.0
+  czg:
+    specifier: ^1.7.0
+    version: registry.npmmirror.com/czg@1.7.0
   eslint:
     specifier: ^8.39.0
     version: registry.npmmirror.com/eslint@8.39.0
@@ -1799,6 +1802,14 @@ packages:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/csstype/-/csstype-3.1.2.tgz}
     name: csstype
     version: 3.1.2
+
+  registry.npmmirror.com/czg@1.7.0:
+    resolution: {integrity: sha512-Y0pC2Ff2PoVRWGHCdZI13Gag8RdhMA9t9Invyjr/efyGbgust8TSQEVvMM4MidAuB7zm8PvGytljk6Segjr4DA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/czg/-/czg-1.7.0.tgz}
+    name: czg
+    version: 1.7.0
+    engines: {node: '>=v12.20.0'}
+    hasBin: true
+    dev: true
 
   registry.npmmirror.com/data-urls@4.0.0:
     resolution: {integrity: sha512-/mMTei/JXPqvFqQtfyTowxmJVwr2PVAeCcDxyFf6LhoOu/09TX2OX3kb2wzi4DMXcfj4OItwDOnhl5oziPnT6g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/data-urls/-/data-urls-4.0.0.tgz}
