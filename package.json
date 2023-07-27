@@ -18,8 +18,12 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@types/qs": "^6.9.7",
+    "@vueuse/core": "^10.2.1",
+    "@vueuse/shared": "^10.2.1",
     "axios": "^1.4.0",
     "element-plus": "^2.3.8",
+    "qs": "^6.11.2",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2"
   },
