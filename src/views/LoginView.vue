@@ -12,19 +12,20 @@
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6">
+      <div class="space-y-6">
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-            >Email address</label
+          <label for="userName" class="block text-sm font-medium leading-6 text-gray-900"
+            >userName</label
           >
           <div class="mt-2">
             <input
-              id="email"
-              name="email"
-              type="email"
-              autocomplete="email"
+              v-model="formData.userName"
+              id="userName"
+              name="userName"
+              type="text"
+              autocomplete="userName"
               required="true"
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -34,20 +35,16 @@
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900"
               >Password</label
             >
-            <div class="text-sm">
-              <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500"
-                >Forgot password?</a
-              >
-            </div>
           </div>
           <div class="mt-2">
             <input
+              v-model="formData.pwd"
               id="password"
               name="password"
               type="password"
               autocomplete="current-password"
               required="true"
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              class="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
         </div>
@@ -59,15 +56,15 @@
             >Sign in</button
           >
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { useUserStoreHook } from '@/hooks/modules/userHook'
-  const { userInfo, GetUserInfo } = useUserStoreHook()
-  console.log(userInfo)
+  const { GET_USER_INFO } = useUserStoreHook()
+  const router = useRouter()
   const loading = ref(false)
   const formData = reactive({
     userName: 'admin',
@@ -77,8 +74,8 @@
   async function handleLogin() {
     loading.value = true
     try {
-      await GetUserInfo(formData)
-      // await router.push({ name: 'Home' })
+      await GET_USER_INFO(formData)
+      await router.push({ name: 'Dashboard' })
     } catch (error) {
       console.warn(error)
     } finally {

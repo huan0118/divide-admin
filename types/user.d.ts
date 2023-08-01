@@ -2,7 +2,7 @@ export interface UserInfo {
   accessToken: string
   userId: string | number
   username: string
-  realName: string
+  email: string
   avatar: string
   desc?: string
 }

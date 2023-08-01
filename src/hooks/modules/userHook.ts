@@ -1,8 +1,8 @@
 import { computed, ref, unref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { createGlobalState } from '@vueuse/shared'
-import type { UserInfo } from '~/types/store'
-import { getLogin } from '@/api/user'
+import type { UserInfo } from '~/types/user'
+import { getLogin, logout } from '@/api/user'
 
 export const useUserStoreHook = createGlobalState(() => {
   // state
@@ -10,7 +10,7 @@ export const useUserStoreHook = createGlobalState(() => {
     accessToken: '',
     userId: '',
     username: '',
-    realName: '',
+    email: '',
     avatar: '',
     desc: ''
   }
@@ -21,21 +21,25 @@ export const useUserStoreHook = createGlobalState(() => {
    * 登入 CURD
    */
   const user = computed(() => unref(userInfo))
-  console.log(user)
-
-  async function GetUserInfo(payload?: object) {
+  console.log(user, userInfo)
+  async function GET_USER_INFO(payload?: object) {
     const res = await getLogin(payload)
     userInfo.value = res.data
   }
-  function UpdateUserInfo(data: UserInfo) {
+
+  async function LOGOUT() {
+    await logout()
+    DEL_USER_INFO()
+  }
+  function UPDATE_USER_INFO(data: UserInfo) {
     userInfo.value = data
   }
-  function DeleteUserInfo() {
+  function DEL_USER_INFO() {
     for (const [key, _] of Object.entries(initData)) {
       // @ts-ignore
       userInfo.value[key] = ''
     }
   }
 
-  return { userInfo, user, GetUserInfo, UpdateUserInfo, DeleteUserInfo }
+  return { userInfo, user, GET_USER_INFO, UPDATE_USER_INFO, DEL_USER_INFO, LOGOUT }
 })

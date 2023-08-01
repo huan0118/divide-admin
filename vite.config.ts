@@ -20,7 +20,7 @@ export default defineConfig({
     vueJsx(),
     AutoImport({
       // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-      imports: ['vue'],
+      imports: ['vue', 'vue-router'],
       resolvers: [ElementPlusResolver()],
       dts: pathResolve('auto-imports.d.ts')
     }),
