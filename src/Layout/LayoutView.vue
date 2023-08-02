@@ -1,17 +1,17 @@
 <template>
-  <el-container>
-    <el-aside>
+  <el-container class="app-wrapper">
+    <el-aside class="app-aside">
       <menu-tree :tree="menuInfo" />
     </el-aside>
 
     <el-container>
-      <el-header height="50px">
+      <el-header class="app-header">
         <nav-bar></nav-bar>
         <!-- <TagsView></TagsView> -->
       </el-header>
-      <el-main class="main-box">
+      <el-main class="main-container">
         <el-scrollbar>
-          <div class="wrap-box">
+          <div class="main-box">
             <router-view :key="$route.fullPath"></router-view>
           </div>
         </el-scrollbar>

@@ -1,0 +1,181 @@
+@mixin merge-style($sideBarWidth, $headerHight) {
+  $menuActiveText: #7a80b4;
+
+  .app-wrapper {
+    height: 100vh;
+  }
+
+  .app-aside {
+    width: $sideBarWidth !important;
+  }
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+    width: $sideBarWidth !important;
+    height: 100%;
+    overflow: hidden;
+    font-size: 0;
+    background: $menuBg;
+    border-right: 1px solid desaturate(#888, 8%);
+
+    /* 展开动画 */
+    transition: width var(--pure-transition-duration);
+
+    .scrollbar-wrapper {
+      overflow-x: hidden !important;
+    }
+
+    .el-scrollbar__bar.is-vertical {
+      right: 0;
+    }
+
+    .el-scrollbar {
+      height: calc(100% - 44px);
+    }
+
+    &.has-logo {
+      .el-scrollbar.pc {
+        /* logo: 48px、leftCollapse: 40px、leftCollapse-shadow: 4px */
+        height: calc(100% - 92px);
+      }
+
+      .el-scrollbar.mobile {
+        height: 100%;
+      }
+    }
+
+    .is-horizontal {
+      display: none;
+    }
+
+    a {
+      display: inline-block;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      padding-left: 10px;
+    }
+
+    .el-menu {
+      height: 100%;
+      background-color: transparent !important;
+      border: none;
+    }
+
+    .el-menu-item,
+    .el-sub-menu__title {
+      height: 50px;
+      color: $menuText;
+      background-color: transparent !important;
+
+      &:hover {
+        color: $menuTitleHover !important;
+      }
+
+      div,
+      span {
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+
+    .submenu-title-noDropdown,
+    .el-sub-menu__title {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .is-active > .el-sub-menu__title,
+    .is-active.submenu-title-noDropdown {
+      color: $subMenuActiveText !important;
+
+      i {
+        color: $subMenuActiveText !important;
+      }
+    }
+
+    .is-active {
+      color: $subMenuActiveText !important;
+      transition: color 0.3s;
+    }
+
+    .el-menu-item.is-active.nest-menu > * {
+      z-index: 1;
+      color: #fff;
+    }
+
+    .el-menu-item.is-active.nest-menu::before {
+      position: absolute;
+      inset: 0 8px;
+      margin: 4px 0;
+      clear: both;
+      content: '';
+      background: var(--el-color-primary) !important;
+      border-radius: 3px;
+    }
+
+    .el-menu .el-menu--inline .el-sub-menu__title,
+    & .el-sub-menu .el-menu-item {
+      min-width: $sideBarWidth !important;
+      font-size: 12px;
+      background-color: $subMenuBg !important;
+    }
+
+    /* 有子集的激活菜单左侧小竖条 */
+    .el-menu--collapse .is-active.outer-most.el-sub-menu > .el-sub-menu__title::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      clear: both;
+      content: '';
+      background-color: $menuActiveBefore;
+      transition: all var(--pure-transition-duration) ease-in-out;
+      transform: translateY(0);
+    }
+
+    .el-menu--collapse .outer-most.el-sub-menu > .el-sub-menu__title::before {
+      position: absolute;
+      top: 50%;
+      display: block;
+      width: 3px;
+      height: 0;
+      content: '';
+      transform: translateY(-50%);
+    }
+
+    /* 无子集的激活菜单背景 */
+    .is-active.submenu-title-noDropdown.outer-most > * {
+      z-index: 1;
+      color: #fff;
+    }
+
+    .is-active.submenu-title-noDropdown.outer-most::before {
+      position: absolute;
+      inset: 0 8px;
+      margin: 4px 0;
+      clear: both;
+      content: '';
+      background: var(--el-color-primary) !important;
+      border-radius: 3px;
+    }
+  }
+
+  .app-header {
+    text-align: right;
+    height: $headerHight;
+    line-height: $headerHight;
+    border-bottom: 1px solid desaturate(#888, 8%);
+  }
+}
+
+body {
+  $sideBarWidth: 210px;
+  $headerHight: 50px;
+  @include merge-style($sideBarWidth, $headerHight);
+}

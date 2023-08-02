@@ -1,25 +1,7 @@
 @import './theme.scss';
 @import './reset.scss';
+@import './sidebar.scss';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-// =================================
-// ==============modal message======
-// =================================
-.modal-icon-warning {
-  color: $warning-color !important;
-}
-
-.modal-icon-success {
-  color: $success-color !important;
-}
-
-.modal-icon-error {
-  color: $error-color !important;
-}
-
-.modal-icon-info {
-  color: $primary-color !important;
-}
