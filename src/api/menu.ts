@@ -7,5 +7,5 @@ export interface MenuResult {
 
 /** 获取菜单信息 */
 export const getMenu = (token: string) => {
-  return http.request<MenuResult>('post', '/power-admin/routes', { data: { token } })
+  return http.request<MenuResult>('get', '/divide-admin/routes', { data: { token } })
 }

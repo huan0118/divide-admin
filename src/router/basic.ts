@@ -1,9 +1,9 @@
 import { type RouteRecordRaw } from 'vue-router'
-import login from '../views/login/login.vue'
+import login from '@/views/LoginView.vue'
 import layout from '@/Layout/LayoutView.vue'
-import redirect from '../redirect/index.vue'
+import redirect from '@/Layout/RedirectView.vue'
 
-export const routes: RouteRecordRaw[] = [
+export const basicRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Dashboard',

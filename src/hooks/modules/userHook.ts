@@ -1,4 +1,4 @@
-import { computed, ref, unref } from 'vue'
+import { unref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import { createGlobalState } from '@vueuse/shared'
 import type { UserInfo } from '~/types/user'
@@ -15,12 +15,11 @@ export const useUserStoreHook = createGlobalState(() => {
     desc: ''
   }
   const userInfo = useStorage<UserInfo>('user-store', initData, sessionStorage)
-  // const userInfo = ref<UserInfo>(initData)
 
   /**
    * 登入 CURD
    */
-  const user = computed(() => unref(userInfo))
+  const user = unref(userInfo)
   console.log(user, userInfo)
   async function GET_USER_INFO(payload?: object) {
     const res = await getLogin(payload)

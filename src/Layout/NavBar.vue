@@ -39,5 +39,5 @@
         break
     }
   }
-  const name = computed(() => user.value.username)
+  const name = computed(() => user.username)
 </script>

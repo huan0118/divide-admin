@@ -1,7 +1,7 @@
 <template>
   <el-container class="app-wrapper">
     <el-aside class="app-aside">
-      <menu-tree :tree="menuInfo" />
+      <menu-tree :tree="dynamicMenu" />
     </el-aside>
 
     <el-container>
@@ -24,7 +24,7 @@
   import MenuTree from './components/MenuTree.vue'
   import NavBar from './NavBar.vue'
   import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
-  const { menuInfo } = userPermissionHook()
+  const { dynamicMenu } = userPermissionHook()
 </script>
 
 <style lang="scss" scoped></style>

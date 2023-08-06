@@ -1,12 +1,10 @@
 interface MenuRow {
   httpUrl: string
-  imageLink: string
+  icon: string
   levelId: number
-  menuCode: string
   menuId: number
   menuName: string
   menuParentId: number
-  menuType: string
   systemCode: string
 }
 

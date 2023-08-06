@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
   import { isExternal } from '@/utils/validate'
-  // const router = useRouter()
   const props = defineProps<{
     node: Readonly<TreeInfo>
   }>()
