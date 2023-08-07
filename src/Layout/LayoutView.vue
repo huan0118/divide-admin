@@ -26,5 +26,3 @@
   import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
   const { dynamicMenu } = userPermissionHook()
 </script>
-
-<style lang="scss" scoped></style>

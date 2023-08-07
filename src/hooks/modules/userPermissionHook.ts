@@ -1,5 +1,5 @@
-import { useStorage } from '@vueuse/core'
-import { createGlobalState } from '@vueuse/shared'
+import { shallowRef } from 'vue'
+import { createGlobalState, type AnyFn } from '@vueuse/shared'
 import { getMenu } from '@/api/menu'
 import { dynamicRoutes } from '@/router/dynamic'
 import type { RouteRecordRaw } from 'vue-router'
@@ -12,16 +12,15 @@ function hasPermission(route: RouteRecordRaw, ids: number[]): boolean {
   }
 }
 
-function getDeepId(menuList: MenuTreeInfo) {
+function getTreeId(menuList: MenuTreeInfo) {
   const res: number[] = []
   for (const row of menuList) {
-    if (!row.children || !row.children.length) {
-      res.push(row.menuId)
-    } else {
-      res.push(...getDeepId(row.children))
+    res.push(row.menuId)
+    if (row.children) {
+      res.push(...getTreeId(row.children))
     }
   }
-  return res
+  return Array.from(new Set(res))
 }
 
 function treeFilter(tree: RouteRecordRaw[], func: Function) {
@@ -35,8 +34,13 @@ function treeFilter(tree: RouteRecordRaw[], func: Function) {
     })
 }
 
-export const filterAsyncRoutes = (routes: RouteRecordRaw[], menuList: MenuTreeInfo) => {
-  const ids: number[] = getDeepId(menuList)
+export const filterAsyncRoutes = (
+  routes: RouteRecordRaw[],
+  menuList: MenuTreeInfo,
+  routeMap: Map<number, RouteRecordRaw>
+) => {
+  const ids: number[] = getTreeId(menuList)
+  console.log(ids)
   const res: RouteRecordRaw[] = treeFilter(routes, (node: RouteRecordRaw) => {
     // 判断非叶子结点
     if (node.children && node.children.length) {
@@ -46,6 +50,7 @@ export const filterAsyncRoutes = (routes: RouteRecordRaw[], menuList: MenuTreeIn
     } else {
       // 判断叶子结点
       if (hasPermission(node, ids)) {
+        routeMap.set(node.meta!.menuId as number, node)
         return true
       } else {
         return false
@@ -56,9 +61,13 @@ export const filterAsyncRoutes = (routes: RouteRecordRaw[], menuList: MenuTreeIn
 }
 
 export const userPermissionHook = createGlobalState(() => {
-  // menu state
+  /**
+   * 菜单数据与菜单映射
+   */
   const initialMenuInfo: MenuTreeInfo = []
-  const dynamicMenu = useStorage('menu-store', initialMenuInfo)
+  const dynamicMenu = shallowRef(initialMenuInfo)
+  const routeMap = new Map<number, RouteRecordRaw>()
+  const dynamicNoopList: AnyFn[] = []
 
   async function GET_MENU(token: string) {
     const { data } = await getMenu(token)
@@ -66,14 +75,23 @@ export const userPermissionHook = createGlobalState(() => {
     return data
   }
 
-  function DEL_MENU() {
+  function CLEAN_DYNAMIC_MENU_DATA() {
     dynamicMenu.value = []
+    routeMap.clear()
+    dynamicNoopList.length = 0
   }
 
   async function GENERATE_FINAL_ROUTES(dynamicMenu: MenuTreeInfo) {
-    const finalRoutes = filterAsyncRoutes(dynamicRoutes, dynamicMenu)
-    console.log(finalRoutes)
+    const finalRoutes = filterAsyncRoutes(dynamicRoutes, dynamicMenu, routeMap)
+    console.log(finalRoutes, routeMap)
     return finalRoutes
   }
-  return { dynamicMenu, GET_MENU, DEL_MENU, GENERATE_FINAL_ROUTES }
+  return {
+    dynamicMenu,
+    routeMap,
+    dynamicNoopList,
+    GET_MENU,
+    CLEAN_DYNAMIC_MENU_DATA,
+    GENERATE_FINAL_ROUTES
+  }
 })

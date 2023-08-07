@@ -18,7 +18,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@types/qs": "^6.9.7",
     "@vueuse/core": "^10.2.1",
     "@vueuse/shared": "^10.2.1",
     "axios": "^1.4.0",
@@ -28,11 +27,14 @@
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
+    "@iconify-json/ep": "^1.1.10",
+    "@iconify-json/ic": "^1.1.14",
     "@playwright/test": "^1.35.0",
     "@rushstack/eslint-patch": "^1.2.0",
     "@tsconfig/node18": "^2.0.1",
     "@types/jsdom": "^21.1.1",
     "@types/node": "^18.16.17",
+    "@types/qs": "^6.9.7",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "@vue/eslint-config-prettier": "^7.1.0",
@@ -53,6 +55,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "~5.0.4",
     "unplugin-auto-import": "^0.16.6",
+    "unplugin-icons": "^0.16.5",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
     "vitest": "^0.32.0",

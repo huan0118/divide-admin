@@ -1,4 +1,5 @@
 interface MenuRow {
+  hidden?: boolean
   httpUrl: string
   icon: string
   levelId: number

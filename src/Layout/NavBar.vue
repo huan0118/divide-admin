@@ -20,24 +20,30 @@
 
 <script setup lang="ts">
   import { useUserStoreHook } from '@/hooks/modules/userHook'
+  import { resetRouter } from '@/router/index'
+  import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
+  const { CLEAN_DYNAMIC_MENU_DATA } = userPermissionHook()
+  const { LOGOUT, userInfo, DEL_USER_INFO } = useUserStoreHook()
   const router = useRouter()
-  const { LOGOUT, user } = useUserStoreHook()
+
+  async function logout() {
+    await LOGOUT()
+    resetRouter()
+    DEL_USER_INFO()
+    CLEAN_DYNAMIC_MENU_DATA()
+    router.replace({ name: 'Login' })
+    console.log(router.getRoutes())
+  }
 
   const handleCommand = (command: string) => {
     switch (command) {
       case 'logout':
-        LOGOUT()
-          .then(() => {
-            router.replace({ name: 'Login' })
-          })
-          .catch((err) => {
-            console.warn(err)
-          })
+        logout()
         break
 
       default:
         break
     }
   }
-  const name = computed(() => user.username)
+  const name = computed(() => userInfo.value.username)
 </script>

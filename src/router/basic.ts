@@ -24,6 +24,6 @@ export const basicRoutes: RouteRecordRaw[] = [
     meta: {
       hidden: true
     },
-    component: () => import(/* webpackChunkName: "notFound" */ '../Layout/notFound.vue')
+    component: () => import(/* webpackChunkName: "notFound" */ '../Layout/NotFound.vue')
   }
 ]

@@ -9,6 +9,8 @@ import postcssPresetEnv from 'postcss-preset-env'
 import tailwindcss from 'tailwindcss'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 const pathResolve = (path: string): string => resolve(process.cwd(), path)
@@ -21,12 +23,25 @@ export default defineConfig({
     AutoImport({
       // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
       imports: ['vue', 'vue-router'],
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver(),
+        IconsResolver({
+          prefix: 'Icon'
+        })
+      ],
       dts: pathResolve('auto-imports.d.ts')
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [
+        ElementPlusResolver(),
+        IconsResolver({
+          enabledCollections: ['ep']
+        })
+      ],
       dts: pathResolve('components.d.ts')
+    }),
+    Icons({
+      autoInstall: true
     })
   ],
   resolve: {
