@@ -28,6 +28,7 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    IEpBaseline5g: typeof import('~icons/ep/baseline5g')['default']
     IEpCircleCheckFilled: typeof import('~icons/ep/circle-check-filled')['default']
     IEpLocation: typeof import('~icons/ep/location')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

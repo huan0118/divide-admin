@@ -34,7 +34,7 @@ function treeFilter(tree: RouteRecordRaw[], func: Function) {
     })
 }
 
-export const filterAsyncRoutes = (
+export const effectAsyncRoutes = (
   routes: RouteRecordRaw[],
   menuList: MenuTreeInfo,
   routeMap: Map<number, RouteRecordRaw>
@@ -50,7 +50,13 @@ export const filterAsyncRoutes = (
     } else {
       // 判断叶子结点
       if (hasPermission(node, ids)) {
+        /**
+         * 设置两个数据结构的对应关系并为RouteRecordRaw添加name
+         */
         routeMap.set(node.meta!.menuId as number, node)
+        if (!node.name) {
+          node.name = Symbol(node.meta!.menuId as number)
+        }
         return true
       } else {
         return false
@@ -82,7 +88,7 @@ export const userPermissionHook = createGlobalState(() => {
   }
 
   async function GENERATE_FINAL_ROUTES(dynamicMenu: MenuTreeInfo) {
-    const finalRoutes = filterAsyncRoutes(dynamicRoutes, dynamicMenu, routeMap)
+    const finalRoutes = effectAsyncRoutes(dynamicRoutes, dynamicMenu, routeMap)
     console.log(finalRoutes, routeMap)
     return finalRoutes
   }

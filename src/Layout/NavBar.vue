@@ -27,6 +27,7 @@
   const router = useRouter()
 
   async function logout() {
+    console.log(router.getRoutes())
     await LOGOUT()
     resetRouter()
     DEL_USER_INFO()

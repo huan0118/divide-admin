@@ -1,12 +1,12 @@
 <template>
-  <div class="TagsView" ref="tagRoot">
-    <el-scrollbar>
-      <div class="scrollbar-flex-content">
+  <div class="TagsView">
+    <el-scrollbar ref="scrollbarRef">
+      <div class="scrollbar-flex-content" ref="innerRef" v-if="multiTags.length">
         <router-link
-          v-for="(tag, index) in visitedViews"
+          v-for="(tag, index) in multiTags"
           :key="index"
           active-class="active"
-          :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+          :to="tag"
           custom
           v-slot="{ navigate }"
         >
@@ -16,7 +16,7 @@
             @contextmenu.prevent="openMenu(tag, $event)"
             @click="navigate"
           >
-            {{ tag.title }}
+            {{ tag?.meta?.title || tag.path }}
           </span>
         </router-link>
       </div>
@@ -27,30 +27,30 @@
       class="contextmenu"
       :style="{ left: position.left + 'px', top: position.top + 'px' }"
     >
-      <li @click="refreshSelectedTag(position.selectedTag)">Refresh</li>
-      <li v-if="!isAffix(position.selectedTag)" @click="closeSelectedTag(position.selectedTag)">
+      <li @click="refreshSelectedTag(position.selectedTag!)">Refresh</li>
+      <li v-if="!isAffix(position.selectedTag!)" @click="closeSelectedTag(position.selectedTag!)">
         Close
       </li>
       <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags(position.selectedTag)">Close All</li>
+      <li @click="closeAllTags()">Close All</li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref, watchEffect, reactive, watch, nextTick, unref } from 'vue'
-  import { useStore } from 'vuex'
-  import { useRoute, useRouter } from 'vue-router'
-  import { extendsOwnPropertyPrimitive, simpleResolve } from '@/utils/index'
+  import type { RouteLocationNormalizedLoaded } from 'vue-router'
+  import type { tagsPositionType } from './types'
+  import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
+  import type { ElScrollbar } from 'element-plus'
+  const { multiTags, SET_TAG, CLEAN_TAG, DEL_OTHERS_TAG, DEL_TAG } = useMultiTagsStoreHook()
   const route = useRoute()
-  const store = useStore()
+  const { currentRoute, replace, push } = useRouter()
 
-  const visitedViews = computed(() => store.state.tagsView.visitedViews)
-  const routes = computed(() => store.state.permission.addRoutes)
-  const router = useRouter()
+  /** 是否隐藏contextmenu，默认隐藏 */
   const visible = ref(false)
-  console.log(router, 'router')
-  const tagRoot = ref(null)
+
+  const innerRef = ref<HTMLDivElement>()
+  const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 
   watchEffect(() => {
     if (visible.value) {
@@ -61,115 +61,80 @@
   })
   onMounted(() => {
     initTags()
-    addTags()
+    console.log(route, 'meta')
+    console.log(multiTags, 'meta')
+    console.log(currentRoute)
   })
 
   watch(
     () => route.fullPath,
     () => {
+      console.log(route.fullPath)
       addTags()
     }
   )
-  const position = reactive({
+
+  const position = reactive<tagsPositionType>({
     left: 0,
     top: 0,
     selectedTag: null
   })
 
-  let Tags = []
-
-  function filterAffixTags(routes, basePath = '/') {
-    let tags = []
-    let tagPath
-    routes.forEach((route) => {
-      if (route.meta && route.meta.affix) {
-        tagPath = simpleResolve(basePath, route.path)
-        tags.push({
-          fullPath: tagPath,
-          path: route.path,
-          name: route.name,
-          query: extendsOwnPropertyPrimitive(route.query),
-          meta: extendsOwnPropertyPrimitive(route.meta)
-        })
-      }
-      if (route.children) {
-        const tempTags = filterAffixTags(route.children, tagPath)
-        if (tempTags.length >= 1) {
-          tags = [...tags, ...tempTags]
-        }
-      }
-    })
-    return tags
-  }
   function initTags() {
-    const affixTags = (Tags = filterAffixTags(routes.value))
-    for (const tag of affixTags) {
-      // Must have tag name
-      if (tag.name) {
-        store.dispatch('tagsView/addVisitedView', tag)
-      }
+    const { meta } = route
+    if (meta?.affix) {
+      SET_TAG(currentRoute.value)
     }
   }
   function addTags() {
-    const { name } = route
-    if (name) {
-      store.dispatch('tagsView/addView', route)
+    const { meta } = route
+    if (meta?.affix) {
+      SET_TAG(currentRoute.value)
     }
-    return false
   }
-  function closeAllTags(view) {
-    store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
-      if (Tags.some((tag) => tag.fullPath === view.fullPath)) {
-        return
-      }
-      toLastView(visitedViews, view)
-    })
+  function closeAllTags() {
+    CLEAN_TAG()
   }
 
   function closeOthersTags() {
-    if (!isActive(position.selectedTag)) {
-      router.push(position.selectedTag)
+    if (!isActive(position.selectedTag!)) {
+      push(position.selectedTag!)
     }
-    store.dispatch('tagsView/delOthersViews', position.selectedTag).then(() => {
-      moveToCurrentTag(position.selectedTag)
-    })
+    DEL_OTHERS_TAG(position.selectedTag!)
   }
 
-  function moveToCurrentTag(view) {
-    store.dispatch('tagsView/updateVisitedView', view)
+  function closeSelectedTag(view: RouteLocationNormalizedLoaded) {
+    console.log(position)
+    const multiTags = DEL_TAG(view)
+    if (isActive(view)) {
+      toLastView(multiTags, view)
+    }
   }
 
-  function closeSelectedTag(view) {
-    console.log(unref(position), position)
-    store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
-      if (isActive(view)) {
-        toLastView(visitedViews, view)
-      }
-    })
-  }
-
-  function toLastView(visitedViews, view) {
-    const latestView = visitedViews.slice(-1)[0]
+  function toLastView(
+    multiTags: RouteLocationNormalizedLoaded[],
+    view: RouteLocationNormalizedLoaded
+  ) {
+    const latestView = multiTags.slice(-1)[0]
     if (latestView) {
-      router.push(latestView.fullPath)
+      push(latestView.fullPath)
     } else {
       if (view.name === 'Dashboard') {
         const { query, fullPath } = view
-        router.replace({ path: '/redirect' + fullPath, query })
+        replace({ path: '/redirect' + fullPath, query })
       } else {
-        router.push('/')
+        push('/')
       }
     }
   }
 
-  function refreshSelectedTag(view) {
-    store.dispatch('tagsView/delCachedView', view).then(() => {
-      const { query, fullPath } = view
-      nextTick(() => {
-        router.replace({
-          path: '/redirect' + fullPath,
-          query
-        })
+  function refreshSelectedTag(view: RouteLocationNormalizedLoaded) {
+    CLEAN_TAG()
+    const { query, fullPath } = view
+    nextTick(() => {
+      replace({
+        path: '/redirect' + fullPath,
+        query
       })
     })
   }
@@ -178,17 +143,16 @@
     visible.value = false
   }
 
-  function isActive(tag) {
+  function isActive(tag: RouteLocationNormalizedLoaded) {
     return tag.fullPath === route.fullPath
   }
-  function isAffix(tag) {
+  function isAffix(tag: RouteLocationNormalizedLoaded) {
     return tag && tag.meta && tag.meta.affix
   }
 
-  function openMenu(tag, e) {
+  function openMenu(tag: RouteLocationNormalizedLoaded, e: MouseEvent) {
     const menuMinWidth = 105
-    // const offsetLeft = tagRoot.value.getBoundingClientRect().left; // container margin left
-    const offsetWidth = tagRoot.value.offsetWidth // container width
+    const offsetWidth = innerRef.value!.offsetWidth // container width
     const maxLeft = offsetWidth - menuMinWidth // left boundary
     const left = e.clientX + 10 // 15: margin right
 
@@ -203,3 +167,77 @@
     visible.value = true
   }
 </script>
+
+<style lang="scss" scoped>
+  .TagsView {
+    border-bottom: 1px solid #eee;
+  }
+  .scrollbar-flex-content {
+    display: flex;
+
+    .tags-view-item {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--el-color-danger-light-9);
+      color: var(--el-color-danger);
+
+      position: relative;
+      cursor: pointer;
+      height: 22px;
+      line-height: 22px;
+      border: 1px solid #d8dce5;
+      color: #495060;
+      background: #fff;
+      padding: 0 8px;
+      font-size: 12px;
+      margin-left: 5px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+      &:first-of-type {
+        margin-left: 15px;
+      }
+      &:last-of-type {
+        margin-right: 15px;
+      }
+      &.active {
+        background-color: #181e34;
+        color: #fff;
+        border-color: #fff;
+        &::before {
+          content: '';
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+
+  .contextmenu {
+    margin: 0;
+    background: #fff;
+    z-index: 3000;
+    position: absolute;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    li {
+      margin: 0;
+      padding: 7px 16px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
+</style>

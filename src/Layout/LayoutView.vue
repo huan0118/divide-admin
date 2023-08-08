@@ -7,7 +7,7 @@
     <el-container>
       <el-header class="app-header">
         <nav-bar></nav-bar>
-        <!-- <TagsView></TagsView> -->
+        <tags-view></tags-view>
       </el-header>
       <el-main class="main-container">
         <el-scrollbar>
@@ -23,6 +23,7 @@
 <script setup lang="ts">
   import MenuTree from './components/MenuTree.vue'
   import NavBar from './NavBar.vue'
+  import TagsView from './TagsView.vue'
   import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
   const { dynamicMenu } = userPermissionHook()
 </script>
