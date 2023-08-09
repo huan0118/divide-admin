@@ -9,5 +9,9 @@ import './permission'
 
 const app = createApp(App)
 
+// 全局注册`@iconify/vue`图标库
+import DlIcon from '@/components/DlIcon/index'
+app.component('DlIcon', DlIcon)
+
 app.use(router)
 app.mount('#app')

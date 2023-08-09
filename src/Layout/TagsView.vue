@@ -1,10 +1,10 @@
 <template>
   <div class="TagsView">
     <el-scrollbar ref="scrollbarRef">
-      <div class="scrollbar-flex-content" ref="innerRef" v-if="multiTags.length">
+      <div class="scrollbar-flex-content" ref="innerRef">
         <router-link
-          v-for="(tag, index) in multiTags"
-          :key="index"
+          v-for="tag in multiTags"
+          :key="tag.fullPath"
           active-class="active"
           :to="tag"
           custom
@@ -27,12 +27,12 @@
       class="contextmenu"
       :style="{ left: position.left + 'px', top: position.top + 'px' }"
     >
-      <li @click="refreshSelectedTag(position.selectedTag!)">Refresh</li>
-      <li v-if="!isAffix(position.selectedTag!)" @click="closeSelectedTag(position.selectedTag!)">
-        Close
+      <li @click="refreshSelectedTag(position.selectedTag!)">刷新</li>
+      <li v-if="isAffix(position.selectedTag!)" @click="closeSelectedTag(position.selectedTag!)">
+        关闭当前
       </li>
-      <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags()">Close All</li>
+      <li @click="closeOthersTags">关闭其他</li>
+      <li @click="closeAllTags()">关闭所有</li>
     </ul>
   </div>
 </template>
@@ -42,6 +42,8 @@
   import type { tagsPositionType } from './types'
   import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
   import type { ElScrollbar } from 'element-plus'
+  import type { RemovableRef } from '@vueuse/core'
+
   const { multiTags, SET_TAG, CLEAN_TAG, DEL_OTHERS_TAG, DEL_TAG } = useMultiTagsStoreHook()
   const route = useRoute()
   const { currentRoute, replace, push } = useRouter()
@@ -60,16 +62,12 @@
     }
   })
   onMounted(() => {
-    initTags()
-    console.log(route, 'meta')
-    console.log(multiTags, 'meta')
-    console.log(currentRoute)
+    addTags()
   })
 
   watch(
     () => route.fullPath,
     () => {
-      console.log(route.fullPath)
       addTags()
     }
   )
@@ -80,12 +78,6 @@
     selectedTag: null
   })
 
-  function initTags() {
-    const { meta } = route
-    if (meta?.affix) {
-      SET_TAG(currentRoute.value)
-    }
-  }
   function addTags() {
     const { meta } = route
     if (meta?.affix) {
@@ -112,10 +104,10 @@
   }
 
   function toLastView(
-    multiTags: RouteLocationNormalizedLoaded[],
+    multiTags: RemovableRef<RouteLocationNormalizedLoaded[]>,
     view: RouteLocationNormalizedLoaded
   ) {
-    const latestView = multiTags.slice(-1)[0]
+    const latestView = multiTags.value.slice(-1)[0]
     if (latestView) {
       push(latestView.fullPath)
     } else {
@@ -230,9 +222,10 @@
     font-size: 12px;
     font-weight: 400;
     color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     li {
       margin: 0;
+      height: 30px;
       padding: 7px 16px;
       cursor: pointer;
       &:hover {

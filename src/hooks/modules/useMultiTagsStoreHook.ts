@@ -13,14 +13,14 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
     const hasTag = multiTags.value.some((row) => row.fullPath === payload.fullPath)
     if (!hasTag) {
       multiTags.value.push(payload)
-      console.log('SET_TAG')
+      console.log('SET_TAG', payload.fullPath)
     }
   }
 
   function DEL_TAG(payload: RouteLocationNormalizedLoaded) {
     const idx = multiTags.value.findIndex((row) => row.fullPath === payload.fullPath)
     multiTags.value.splice(idx, 1)
-    return unref(multiTags)
+    return multiTags
   }
 
   function CLEAN_TAG() {
@@ -34,5 +34,5 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
       multiTags.value.push(popItem)
     }
   }
-  return { multiTags: unref(multiTags), SET_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }
+  return { multiTags, SET_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }
 })

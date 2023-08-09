@@ -26,7 +26,7 @@ export default defineConfig({
       resolvers: [
         ElementPlusResolver(),
         IconsResolver({
-          prefix: 'Icon'
+          enabledCollections: ['ep', 'tabler']
         })
       ],
       dts: pathResolve('auto-imports.d.ts')
@@ -35,7 +35,7 @@ export default defineConfig({
       resolvers: [
         ElementPlusResolver(),
         IconsResolver({
-          enabledCollections: ['ep']
+          enabledCollections: ['ep', 'tabler']
         })
       ],
       dts: pathResolve('components.d.ts')

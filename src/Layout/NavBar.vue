@@ -1,5 +1,5 @@
 <template>
-  <section class="Navbar">
+  <section class="app-navbar">
     <div class="right-menu">
       <span class="name">{{ name }}</span>
       <el-dropdown @command="handleCommand">

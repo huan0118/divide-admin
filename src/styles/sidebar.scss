@@ -1,4 +1,4 @@
-@mixin merge-style($sideBarWidth, $headerHight) {
+@mixin merge-style($sideBarWidth, $headerHight, $navbarHight) {
   $menuActiveText: #7a80b4;
 
   .app-wrapper {
@@ -167,15 +167,20 @@
   }
 
   .app-header {
-    text-align: right;
+    padding: 0;
     height: $headerHight;
-    line-height: $headerHight;
+  }
+  .app-navbar {
+    text-align: right;
+    height: $navbarHight;
+    line-height: $navbarHight;
     border-bottom: 1px solid desaturate(#888, 8%);
   }
 }
 
 body {
   $sideBarWidth: 210px;
-  $headerHight: 50px;
-  @include merge-style($sideBarWidth, $headerHight);
+  $headerHight: 80px;
+  $navbarHight: 50px;
+  @include merge-style($sideBarWidth, $headerHight, $navbarHight);
 }

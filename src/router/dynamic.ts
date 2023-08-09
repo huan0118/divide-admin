@@ -25,20 +25,22 @@ export const dynamicRoutes: RouteRecordRaw[] = [
           {
             path: 'nested3',
             meta: {
-              menuId: 2803012
+              menuId: 2803012,
+              affix: true,
+              title: 'nested'
             },
             component: () => import(/* webpackChunkName: "nested3" */ '../views/nested/menu3.vue')
           }
         ]
       }
     ]
+  },
+  {
+    path: '/TableView',
+    name: 'TableView',
+    meta: {
+      menuId: 1110027
+    },
+    component: () => import(/* webpackChunkName: "TableView" */ '../views/TableView.vue')
   }
-  // {
-  //   path: 'AboutView',
-  //   name: 'AboutView',
-  //   meta: {
-  //     menuId: 2803012
-  //   },
-  //   component: () => import(/* webpackChunkName: "AboutView" */ '../views/AboutView.vue')
-  // }
 ]

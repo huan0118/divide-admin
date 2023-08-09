@@ -30,6 +30,12 @@ devDependencies:
   '@iconify-json/ic':
     specifier: ^1.1.14
     version: 1.1.14
+  '@iconify-json/tabler':
+    specifier: ^1.1.87
+    version: 1.1.87
+  '@iconify/vue':
+    specifier: ^4.1.1
+    version: 4.1.1(vue@3.3.4)
   '@playwright/test':
     specifier: ^1.35.0
     version: registry.npmmirror.com/@playwright/test@1.35.0
@@ -719,6 +725,12 @@ packages:
       '@iconify/types': 2.0.0
     dev: true
 
+  /@iconify-json/tabler@1.1.87:
+    resolution: {integrity: sha512-JkAZOAQDtHjQ4cOZbgJLOwH6yVsng8M6dEju7me5/5TOb9TlOCbSsKdHy2hUvr5wEgZAtCxvEStBmU/IKOo3Pw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
   /@iconify/types@2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
@@ -734,6 +746,15 @@ packages:
       local-pkg: 0.4.3
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@iconify/vue@4.1.1(vue@3.3.4):
+    resolution: {integrity: sha512-RL85Bm/DAe8y6rT6pux7D2FJSiUEM/TPfyK7GrbAOfTSwrhvwJW+S5yijdGcmtXouA8MtuH9C7l4hiSE4mLMjg==}
+    peerDependencies:
+      vue: '>=3'
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: registry.npmmirror.com/vue@3.3.4
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
