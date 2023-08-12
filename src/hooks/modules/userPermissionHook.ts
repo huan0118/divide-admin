@@ -12,12 +12,15 @@ function hasPermission(route: RouteRecordRaw, ids: number[]): boolean {
   }
 }
 
-function getTreeId(menuList: MenuTreeInfo) {
+function getTreeId(dynamicMenu: MenuTreeInfo, menuMap: Map<number, MenuRow>) {
   const res: number[] = []
-  for (const row of menuList) {
-    res.push(row.menuId)
+  for (const row of dynamicMenu) {
+    if (row.menuId) {
+      res.push(row.menuId)
+      menuMap.set(row.menuId, row)
+    }
     if (row.children) {
-      res.push(...getTreeId(row.children))
+      res.push(...getTreeId(row.children, menuMap))
     }
   }
   return Array.from(new Set(res))
@@ -35,13 +38,13 @@ function treeFilter(tree: RouteRecordRaw[], func: Function) {
 }
 
 export const effectAsyncRoutes = (
-  routes: RouteRecordRaw[],
-  menuList: MenuTreeInfo,
-  routeMap: Map<number, RouteRecordRaw>
+  dynamicRoutes: RouteRecordRaw[],
+  dynamicMenu: MenuTreeInfo,
+  routeMap: Map<number, RouteRecordRaw>,
+  menuMap: Map<number, MenuRow>
 ) => {
-  const ids: number[] = getTreeId(menuList)
-  console.log(ids)
-  const res: RouteRecordRaw[] = treeFilter(routes, (node: RouteRecordRaw) => {
+  const ids: number[] = getTreeId(dynamicMenu, menuMap)
+  const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
     // 判断非叶子结点
     if (node.children && node.children.length) {
       return true
@@ -72,9 +75,9 @@ export const userPermissionHook = createGlobalState(() => {
    */
   const initialMenuInfo: MenuTreeInfo = []
   const dynamicMenu = shallowRef(initialMenuInfo)
-  const routeMap = new Map<number, RouteRecordRaw>()
   const dynamicNoopList: AnyFn[] = []
-
+  const routeMap = new Map<number, RouteRecordRaw>()
+  const menuMap = new Map<number, MenuRow>()
   async function GET_MENU(token: string) {
     const { data } = await getMenu(token)
     dynamicMenu.value = data
@@ -88,14 +91,14 @@ export const userPermissionHook = createGlobalState(() => {
   }
 
   async function GENERATE_FINAL_ROUTES(dynamicMenu: MenuTreeInfo) {
-    const finalRoutes = effectAsyncRoutes(dynamicRoutes, dynamicMenu, routeMap)
-    console.log(finalRoutes, routeMap)
+    const finalRoutes = effectAsyncRoutes(dynamicRoutes, dynamicMenu, routeMap, menuMap)
     return finalRoutes
   }
   return {
     dynamicMenu,
-    routeMap,
+    menuMap,
     dynamicNoopList,
+    routeMap,
     GET_MENU,
     CLEAN_DYNAMIC_MENU_DATA,
     GENERATE_FINAL_ROUTES

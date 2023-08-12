@@ -27,13 +27,11 @@
   const router = useRouter()
 
   async function logout() {
-    console.log(router.getRoutes())
     await LOGOUT()
     resetRouter()
     DEL_USER_INFO()
     CLEAN_DYNAMIC_MENU_DATA()
     router.replace({ name: 'Login' })
-    console.log(router.getRoutes())
   }
 
   const handleCommand = (command: string) => {

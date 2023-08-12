@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
   import type { RouteLocationNormalizedLoaded } from 'vue-router'
-  import type { tagsPositionType } from './types'
+  import type { tagsPositionType } from '../types'
   import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
   import type { ElScrollbar } from 'element-plus'
   import type { RemovableRef } from '@vueuse/core'

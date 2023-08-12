@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const dynamicRoutes: RouteRecordRaw[] = [
   {
-    path: 'HomeView',
+    path: '/HomeView',
     // name: 'HomeView',
     meta: {
       affix: true,

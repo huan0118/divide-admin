@@ -3,7 +3,7 @@
     <template v-if="hasOneShowingChild(props.node.children)">
       <el-menu-item :index="String(props.node.menuId)" :route="resolveTo(props.node)">
         <template #title>
-          <dl-icon :icon="props.node.icon" />
+          <de-icon :icon="props.node.icon" />
           {{ props.node.menuName }}
         </template>
       </el-menu-item>
@@ -11,7 +11,7 @@
 
     <el-sub-menu v-else :index="String(props.node.menuId)" teleported>
       <template #title>
-        <dl-icon :icon="props.node.icon" />
+        <de-icon :icon="props.node.icon" />
         {{ props.node.menuName }}
       </template>
       <sub-menu

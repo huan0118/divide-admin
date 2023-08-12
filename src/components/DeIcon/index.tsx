@@ -9,7 +9,7 @@ export default defineComponent({
       default: ''
     }
   },
-  name: 'DlIcon',
+  name: 'DeIcon',
   setup(props, { attrs }) {
     return () => <IconifyIcon {...attrs} icon={props.icon} />
   }

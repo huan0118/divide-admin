@@ -2,10 +2,14 @@ import router from '@/router'
 import { ElMessage } from 'element-plus'
 import { useUserStoreHook } from '@/hooks/modules/userHook'
 import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
+import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
+import { useLocalMenuActive } from '@/hooks/modules/useLocalMenuActive'
 
 const { userInfo, DEL_USER_INFO } = useUserStoreHook()
 const { dynamicMenu, dynamicNoopList, GET_MENU, GENERATE_FINAL_ROUTES } = userPermissionHook()
-const whiteList = ['/login'] // 白名单
+const whiteList = ['/login', '/notFoundPath'] // 白名单
+const { multiTags } = useMultiTagsStoreHook()
+const { localMenuActive } = useLocalMenuActive()
 
 router.beforeEach(async (to, from) => {
   const hasToken = userInfo.value.accessToken
@@ -18,13 +22,18 @@ router.beforeEach(async (to, from) => {
         return true
       } else {
         try {
-          // 生成路由
+          /**
+           * 根据token获取当前用户的菜单并生成最终所拥有的权限路由
+           */
           const MenuTreeData = await GET_MENU(hasToken)
           const accessRoutes = await GENERATE_FINAL_ROUTES(MenuTreeData)
           for (const row of accessRoutes) {
             dynamicNoopList.push(router.addRoute('Dashboard', row))
           }
-          if (accessRoutes.length) {
+          const hasCache = multiTags.value.find((row) => row.meta.menuId == localMenuActive.value)
+          if (hasCache) {
+            return hasCache.fullPath
+          } else if (accessRoutes.length) {
             return accessRoutes[0].path
           } else {
             return true

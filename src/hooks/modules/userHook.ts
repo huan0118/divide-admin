@@ -4,7 +4,9 @@ import type { UserInfo } from '~/types/user'
 import { getLogin, logout } from '@/api/user'
 
 export const useUserStoreHook = createGlobalState(() => {
-  // state
+  /**
+   * 登入用户信息的CURD
+   */
   const initData = {
     accessToken: '',
     userId: '',
@@ -15,9 +17,6 @@ export const useUserStoreHook = createGlobalState(() => {
   }
   const userInfo = useStorage<UserInfo>('user-store', initData, sessionStorage)
 
-  /**
-   * 登入 CURD
-   */
   async function GET_USER_INFO(payload?: object) {
     const res = await getLogin(payload)
     userInfo.value = res.data

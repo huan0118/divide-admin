@@ -32,6 +32,11 @@ export default defineConfig({
       dts: pathResolve('auto-imports.d.ts')
     }),
     Components({
+      include: [
+        /.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /.vue$/,
+        /.vue?vue/ // .vue
+      ],
       resolvers: [
         ElementPlusResolver(),
         IconsResolver({
