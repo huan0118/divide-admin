@@ -57,6 +57,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "~5.0.4",
     "unplugin-auto-import": "^0.16.6",
+    "unplugin-element-plus": "^0.8.0",
     "unplugin-icons": "^0.16.5",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",

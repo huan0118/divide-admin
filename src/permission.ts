@@ -2,13 +2,12 @@ import router from '@/router'
 import { ElMessage } from 'element-plus'
 import { useUserStoreHook } from '@/hooks/modules/userHook'
 import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
-import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
 import { useLocalMenuActive } from '@/hooks/modules/useLocalMenuActive'
 
 const { userInfo, DEL_USER_INFO } = useUserStoreHook()
-const { dynamicMenu, dynamicNoopList, GET_MENU, GENERATE_FINAL_ROUTES } = userPermissionHook()
+const { dynamicMenu, dynamicNoopList, routeMap, GET_MENU, GENERATE_FINAL_ROUTES } =
+  userPermissionHook()
 const whiteList = ['/login', '/notFoundPath'] // 白名单
-const { multiTags } = useMultiTagsStoreHook()
 const { localMenuActive } = useLocalMenuActive()
 
 router.beforeEach(async (to, from) => {
@@ -30,9 +29,9 @@ router.beforeEach(async (to, from) => {
           for (const row of accessRoutes) {
             dynamicNoopList.push(router.addRoute('Dashboard', row))
           }
-          const hasCache = multiTags.value.find((row) => row.meta.menuId == localMenuActive.value)
+          const hasCache = routeMap.get(+localMenuActive.value)
           if (hasCache) {
-            return hasCache.fullPath
+            return hasCache
           } else if (accessRoutes.length) {
             return accessRoutes[0].path
           } else {

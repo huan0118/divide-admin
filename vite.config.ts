@@ -12,6 +12,7 @@ import Components from 'unplugin-vue-components/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import ElementPlus from 'unplugin-element-plus/vite'
 
 const pathResolve = (path: string): string => resolve(process.cwd(), path)
 
@@ -44,6 +45,9 @@ export default defineConfig({
         })
       ],
       dts: pathResolve('components.d.ts')
+    }),
+    ElementPlus({
+      useSource: false
     }),
     Icons({
       autoInstall: true

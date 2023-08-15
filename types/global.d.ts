@@ -34,14 +34,3 @@ interface TreeInfo<T = MenuRow> extends MenuRow {
   children?: T[]
 }
 declare type MenuTreeInfo = Readonly<TreeInfo>[]
-
-// /**
-//  * 职能数据类型说明
-//  */
-// interface JobRow {
-//   jobId: number
-//   jobName: string
-//   resourceType: string
-// }
-
-// declare type JobList = Readonly<JobRow>[]

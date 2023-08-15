@@ -1,7 +1,7 @@
 <template>
   <section class="app-navbar">
     <div class="right-menu">
-      <span class="name">{{ name }}</span>
+      <span class="name">{{ userInfo.username }}</span>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
           <el-avatar
@@ -44,5 +44,4 @@
         break
     }
   }
-  const name = computed(() => userInfo.value.username)
 </script>

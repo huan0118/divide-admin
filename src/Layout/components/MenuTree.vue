@@ -1,13 +1,7 @@
 <template>
   <div class="sidebar-container">
     <el-scrollbar>
-      <el-menu
-        :default-active="localMenuActive"
-        class="el-menu-vertical"
-        unique-opened
-        router
-        @select="handleSelect"
-      >
+      <el-menu :default-active="localMenuActive" class="el-menu-vertical" unique-opened router>
         <sub-menu v-for="item in props.tree" :key="item.menuId" :node="item" />
       </el-menu>
     </el-scrollbar>
@@ -20,6 +14,7 @@
   const props = defineProps<{
     tree: MenuTreeInfo
   }>()
+  const { currentRoute } = useRouter()
   const { localMenuActive, CHANGE_LOCAL_ACTIVE } = useLocalMenuActive()
 
   if (!localMenuActive.value) {
@@ -27,7 +22,10 @@
     CHANGE_LOCAL_ACTIVE(String(currentRoute.value.meta.menuId!))
   }
 
-  function handleSelect(index: string) {
-    CHANGE_LOCAL_ACTIVE(index)
-  }
+  watch(
+    () => currentRoute.value.fullPath,
+    () => {
+      CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId as string)
+    }
+  )
 </script>
