@@ -31,6 +31,8 @@ export const useUserStoreHook = createGlobalState(() => {
   function DEL_USER_INFO() {
     userInfo.value = initData
   }
-
-  return { userInfo, GET_USER_INFO, UPDATE_USER_INFO, DEL_USER_INFO, LOGOUT }
+  function REST_TOKEN(token: string) {
+    userInfo.value.accessToken = token
+  }
+  return { userInfo, GET_USER_INFO, UPDATE_USER_INFO, DEL_USER_INFO, LOGOUT, REST_TOKEN }
 })

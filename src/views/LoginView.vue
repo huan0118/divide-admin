@@ -64,7 +64,7 @@
 <script setup lang="ts">
   import { useUserStoreHook } from '@/hooks/modules/userHook'
   const { GET_USER_INFO } = useUserStoreHook()
-  const { currentRoute, push } = useRouter()
+  const { push } = useRouter()
   const loading = ref(false)
   const formData = reactive({
     userName: 'admin',
@@ -75,7 +75,7 @@
     loading.value = true
     try {
       await GET_USER_INFO(formData)
-      await push((currentRoute.value.query.redirect as string) ?? { name: 'Dashboard' })
+      await push({ name: 'Dashboard' })
     } catch (error) {
       console.warn(error)
     } finally {

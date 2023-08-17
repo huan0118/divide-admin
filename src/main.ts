@@ -8,9 +8,7 @@ import '@/styles/index.scss'
 const app = createApp(App)
 
 /**
- * 全局注册
- * DeIcon
- * DeResponsibility
+ * 注册全局组件
  */
 import DeIcon from '@/components/DeIcon/index'
 import DeResponsibility from '@/components/DeResponsibility/index'
