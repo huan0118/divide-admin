@@ -7,17 +7,29 @@ export const basicRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Dashboard',
-    component: layout
+    component: layout,
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        meta: {
+          affix: true,
+          title: 'Dashboard'
+        },
+        component: () =>
+          import(/* webpackChunkName: "DashboardView" */ '../views/DashboardView.vue')
+      },
+      {
+        path: '/redirect/:path(.*)',
+        component: redirect,
+        name: 'Redirect'
+      }
+    ]
   },
   {
     path: '/login',
     name: 'Login',
     component: login
-  },
-  {
-    path: '/redirect/:path(.*)',
-    component: redirect,
-    name: 'Redirect'
   },
   {
     path: '/:notFoundPath(.*)*',

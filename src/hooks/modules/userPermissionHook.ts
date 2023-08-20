@@ -12,7 +12,7 @@ function hasPermission(route: RouteRecordRaw, ids: number[]): boolean {
   }
 }
 
-function getTreeId(dynamicMenu: MenuTreeInfo, menuMap: Map<number, MenuRow>) {
+function effectGetTreeMapId(dynamicMenu: MenuTreeInfo, menuMap: Map<number, MenuRow>) {
   const res: number[] = []
   for (const row of dynamicMenu) {
     if (row.menuId) {
@@ -20,7 +20,7 @@ function getTreeId(dynamicMenu: MenuTreeInfo, menuMap: Map<number, MenuRow>) {
       menuMap.set(row.menuId, row)
     }
     if (row.children) {
-      res.push(...getTreeId(row.children, menuMap))
+      res.push(...effectGetTreeMapId(row.children, menuMap))
     }
   }
   return Array.from(new Set(res))
@@ -43,7 +43,7 @@ export const effectAsyncRoutes = (
   routeMap: Map<number, RouteRecordRaw>,
   menuMap: Map<number, MenuRow>
 ) => {
-  const ids: number[] = getTreeId(dynamicMenu, menuMap)
+  const ids: number[] = effectGetTreeMapId(dynamicMenu, menuMap)
   const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
     // 判断非叶子结点
     if (node.children && node.children.length) {
@@ -78,6 +78,8 @@ export const userPermissionHook = createGlobalState(() => {
   const dynamicNoopList: AnyFn[] = []
   const routeMap = new Map<number, RouteRecordRaw>()
   const menuMap = new Map<number, MenuRow>()
+  const cacheCurrentRouteJobMap = new Map<number, string | number>()
+
   async function GET_MENU(token: string) {
     const { data } = await getMenu(token)
     dynamicMenu.value = data
@@ -99,6 +101,7 @@ export const userPermissionHook = createGlobalState(() => {
     menuMap,
     dynamicNoopList,
     routeMap,
+    cacheCurrentRouteJobMap,
     GET_MENU,
     CLEAN_DYNAMIC_MENU_DATA,
     GENERATE_FINAL_ROUTES

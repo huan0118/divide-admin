@@ -12,7 +12,12 @@
       <el-main class="main-container">
         <el-scrollbar>
           <div class="main-box">
-            <router-view :key="$route.fullPath"></router-view>
+            <router-view v-slot="{ Component }" :key="$route.fullPath">
+              <transition name="fade" mode="out-in">
+                <component :is="Component" />
+              </transition>
+            </router-view>
+            <!-- <router-view :key="$route.fullPath"></router-view> -->
           </div>
         </el-scrollbar>
       </el-main>
@@ -27,3 +32,15 @@
   import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
   const { dynamicMenu } = userPermissionHook()
 </script>
+
+<style>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+</style>

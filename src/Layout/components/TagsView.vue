@@ -1,7 +1,7 @@
 <template>
-  <div class="TagsView">
+  <div class="border-b border-regal-black/60">
     <el-scrollbar ref="scrollbarRef">
-      <div class="scrollbar-flex-content" ref="innerRef">
+      <div class="flex p-1" ref="innerRef">
         <router-link
           v-for="tag in multiTags"
           :key="tag.fullPath"
@@ -11,8 +11,13 @@
           v-slot="{ navigate }"
         >
           <span
-            class="tags-view-item"
-            :class="isActive(tag) ? 'active' : ''"
+            before=""
+            class="relative cursor-pointer shrink-0 flex justify-center items-center h-6 ml-1 mr-1 text-xs border border-slate-800/40 p-1 px-2"
+            :class="
+              isActive(tag)
+                ? 'text-white bg-regal-black/90 before:content-[attr(before)] before:bg-white before:w-2 before:h-2 before:rounded-full before:mr-1'
+                : ''
+            "
             @contextmenu.prevent="openMenu(tag, $event)"
             @click="navigate"
           >
@@ -24,15 +29,31 @@
 
     <ul
       v-show="visible"
-      class="contextmenu"
+      class="absolute bg-white z-50 shadow-md py-2 text-sm rounded"
       :style="{ left: position.left + 'px', top: position.top + 'px' }"
     >
-      <li @click="refreshSelectedTag(position.selectedTag!)">刷新</li>
-      <li v-if="isAffix(position.selectedTag!)" @click="closeSelectedTag(position.selectedTag!)">
+      <li
+        class="px-4 h-8 cursor-pointer leading-8 hover:bg-black/40 hover:text-white"
+        @click="refreshSelectedTag(position.selectedTag!)"
+        >刷新</li
+      >
+      <li
+        class="px-4 h-8 cursor-pointer leading-8 hover:bg-black/40 hover:text-white"
+        v-if="isAffix(position.selectedTag!)"
+        @click="closeSelectedTag(position.selectedTag!)"
+      >
         关闭当前
       </li>
-      <li @click="closeOthersTags">关闭其他</li>
-      <li @click="closeAllTags()">关闭所有</li>
+      <li
+        class="px-4 h-8 cursor-pointer leading-8 hover:bg-black/40 hover:text-white"
+        @click="closeOthersTags"
+        >关闭其他</li
+      >
+      <li
+        class="px-4 h-8 cursor-pointer leading-8 hover:bg-black/40 hover:text-white"
+        @click="closeAllTags()"
+        >关闭所有</li
+      >
     </ul>
   </div>
 </template>
@@ -86,6 +107,9 @@
   }
   function closeAllTags() {
     CLEAN_TAG()
+    nextTick(() => {
+      replace('/')
+    })
   }
 
   function closeOthersTags() {
@@ -159,78 +183,3 @@
     visible.value = true
   }
 </script>
-
-<style lang="scss" scoped>
-  .TagsView {
-    border-bottom: 1px solid #eee;
-  }
-  .scrollbar-flex-content {
-    display: flex;
-
-    .tags-view-item {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--el-color-danger-light-9);
-      color: var(--el-color-danger);
-
-      position: relative;
-      cursor: pointer;
-      height: 22px;
-      line-height: 22px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
-      margin-bottom: 4px;
-      &:first-of-type {
-        margin-left: 15px;
-      }
-      &:last-of-type {
-        margin-right: 15px;
-      }
-      &.active {
-        background-color: #181e34;
-        color: #fff;
-        border-color: #fff;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
-      }
-    }
-  }
-
-  .contextmenu {
-    margin: 0;
-    background: #fff;
-    z-index: 3000;
-    position: absolute;
-    list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #333;
-    box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
-    li {
-      margin: 0;
-      height: 30px;
-      padding: 7px 16px;
-      cursor: pointer;
-      &:hover {
-        background: #eee;
-      }
-    }
-  }
-</style>
