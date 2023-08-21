@@ -42,6 +42,9 @@ jobs:
           version: 8
           run_install: false
 
+      - name: Install
+        run: pnpm i
+
       - name: Start Lint Code
         run: pnpm run lint
 
