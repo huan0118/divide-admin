@@ -18,6 +18,10 @@ const pathResolve = (path: string): string => resolve(process.cwd(), path)
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/divide-admin/',
+  build: {
+    outDir: 'dist'
+  },
   plugins: [
     vue(),
     vueJsx(),

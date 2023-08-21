@@ -2,11 +2,22 @@ import type { RouteRecordRaw } from 'vue-router'
 
 export const dynamicRoutes: RouteRecordRaw[] = [
   {
+    path: '',
+    name: 'Welcome',
+    meta: {
+      affix: true,
+      title: 'Welcome',
+      menuId: 4123040
+    },
+    component: () => import(/* webpackChunkName: "DashboardView" */ '../views/DashboardView.vue')
+  },
+  {
     path: 'HomeView',
     // name: 'HomeView',
     meta: {
       affix: true,
-      menuId: 2713025
+      menuId: 2713025,
+      title: 'HomeView'
     },
     component: () => import(/* webpackChunkName: "HomeView" */ '../views/HomeView.vue')
   },

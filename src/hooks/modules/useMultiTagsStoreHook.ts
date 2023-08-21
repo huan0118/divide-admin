@@ -12,8 +12,10 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
   async function SET_TAG(payload: RouteLocationNormalizedLoaded) {
     const hasTag = multiTags.value.some((row) => row.fullPath === payload.fullPath)
     if (!hasTag) {
-      multiTags.value.push(payload)
-      console.log('SET_TAG', payload.fullPath)
+      const payloadRaw = { ...toRaw(payload) }
+      Reflect.deleteProperty(payloadRaw, 'matched')
+      Reflect.deleteProperty(payloadRaw, 'redirectedFrom')
+      multiTags.value.push(payloadRaw)
     }
   }
 
