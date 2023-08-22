@@ -2,41 +2,23 @@ import { defineComponent } from 'vue'
 import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
 
 export default defineComponent({
-  props: ['modelValue'],
-  emits: ['update:modelValue'],
   name: 'DeResponsibility',
-  setup(props, { attrs, emit }) {
+  setup(props, { attrs }) {
     const { menuMap, cacheCurrentRouteJobMap } = userPermissionHook()
     const { currentRoute, replace } = useRouter()
-    const { menuId } = currentRoute.value.meta
+    /**
+     * permissions 为当前页面所有岗位职能数组
+     * _permissions 为当前选中的职能
+     */
+    const { menuId, _permissions } = currentRoute.value.meta
     const { permissions } = menuMap.get(menuId as number)!
     /**
      * 默认岗位职能
      */
     const defaultValue = ref()
-
-    if (menuId && permissions?.length) {
-      for (const row of permissions) {
-        if (row.jobId === props.modelValue) {
-          cacheCurrentRouteJobMap.set(+menuId, props.modelValue)
-          break
-        }
-      }
-      if (cacheCurrentRouteJobMap.get(+menuId)) {
-        defaultValue.value = cacheCurrentRouteJobMap.get(+menuId)
-      } else {
-        defaultValue.value = permissions[0].jobId
-        cacheCurrentRouteJobMap.set(+menuId, defaultValue.value)
-      }
-    } else {
-      console.warn('当前菜单没有岗位职能')
+    if (_permissions) {
+      defaultValue.value = _permissions.jobId
     }
-    /**
-     * 监听modelValue
-     */
-    watchEffect(() => {
-      emit('update:modelValue', defaultValue.value)
-    })
     /**
      * 进行路由替换更新
      * @param value

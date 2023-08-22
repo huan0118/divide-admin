@@ -1,36 +1,16 @@
 <template>
-  <de-responsibility
-    v-model="responsibility"
-    placeholder="切换岗位职能"
-    :clearable="true"
-  ></de-responsibility>
+  <de-responsibility placeholder="切换岗位职能"></de-responsibility>
+
+  <div class="">
+    {{ _permissions!.jobName }}
+  </div>
+
+  <div>
+    {{ _permissions!.resources![0].resource }}
+  </div>
 </template>
 
 <script lang="ts" setup>
-  /**
-   *
-   * 获取职能id的时机
-   */
-
-  const responsibility = ref('')
-  console.log('宏任务=>', responsibility.value)
-
-  watch(
-    () => responsibility.value,
-    () => {
-      console.log('watch=>', responsibility.value)
-    }
-  )
-
-  Promise.resolve().then(() => {
-    console.log('微任务=>', responsibility.value)
-  })
-
-  watchEffect(() => {
-    console.log('watchEffect=>', responsibility.value)
-  })
-
-  onMounted(() => {
-    console.log('onMounted=>', responsibility.value)
-  })
+  const { currentRoute } = useRouter()
+  const { _permissions } = currentRoute.value.meta
 </script>

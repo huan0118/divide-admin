@@ -6,12 +6,20 @@ interface PressButtonRow {
   code: string
 }
 /**
+ * 资源类型
+ */
+interface ResourceRow {
+  resourceType: string
+  resourceId: string
+  resource: unknown
+}
+/**
  * 岗位职能
  */
 interface PermissionRow {
   jobId: string | number
   jobName: string
-  resourceType: string
+  resources: ResourceRow[]
 }
 /**
  * 菜单项
