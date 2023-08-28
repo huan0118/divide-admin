@@ -109,7 +109,7 @@ export const effectAsyncRoutes = (
           node.name = Symbol(node.meta!.menuId as number)
         }
         node.beforeEnter = effectPermissionBeforeEnter(
-          node.meta!.menuId!,
+          node.meta!.menuId as number,
           cacheCurrentRouteJobMap,
           menuMap
         )
@@ -146,6 +146,7 @@ export const userPermissionHook = createGlobalState(() => {
   }
 
   async function GENERATE_FINAL_ROUTES(dynamicMenu: MenuTreeInfo) {
+    console.time('generatorDynamicRouter')
     const finalRoutes = effectAsyncRoutes(
       dynamicRoutes,
       dynamicMenu,
@@ -153,6 +154,7 @@ export const userPermissionHook = createGlobalState(() => {
       menuMap,
       cacheCurrentRouteJobMap
     )
+    console.timeEnd('generatorDynamicRouter')
     return finalRoutes
   }
   return {
