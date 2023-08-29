@@ -1,6 +1,6 @@
 import { useStorage } from '@vueuse/core'
 import { createGlobalState } from '@vueuse/shared'
-import type { UserInfo } from '~/types/user'
+import type { UserInfo } from '~/types/api'
 import { getLogin, logout } from '@/api/user'
 
 export const useUserStoreHook = createGlobalState(() => {

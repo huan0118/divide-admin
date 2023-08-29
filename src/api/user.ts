@@ -1,5 +1,5 @@
 import { http } from '@/utils/http/Axios'
-import type { UserInfo } from '~/types/user'
+import type { UserInfo } from '~/types/api'
 
 export interface UserResult {
   code: number

@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { stringify } from 'qs'
 import type { AxiosInstance, AxiosRequestConfig, CustomParamsSerializer } from 'axios'
-import type { PHttpError, RequestMethods, PHttpResponse, PHttpRequestConfig } from './types.d'
+import type { PHttpError, RequestMethods, PHttpResponse, PHttpRequestConfig } from '~/types/helper'
 import { ElNotification } from 'element-plus'
 import { useUserStoreHook } from '@/hooks/modules/userHook'
 import { refreshTokenApi } from '@/api/user'
