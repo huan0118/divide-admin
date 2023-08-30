@@ -120,7 +120,6 @@
   }
 
   function closeSelectedTag(view: RouteLocationNormalizedLoaded) {
-    console.log(position)
     const multiTags = DEL_TAG(view)
     if (isActive(view)) {
       toLastView(multiTags, view)

@@ -19,13 +19,13 @@
 
   if (!localMenuActive.value) {
     const { currentRoute } = useRouter()
-    CHANGE_LOCAL_ACTIVE(String(currentRoute.value.meta.menuId!))
+    CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId!)
   }
 
   watch(
     () => currentRoute.value.fullPath,
     () => {
-      CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId as string)
+      CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId!)
     }
   )
 </script>

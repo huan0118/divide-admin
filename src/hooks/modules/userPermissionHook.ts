@@ -146,7 +146,6 @@ export const userPermissionHook = createGlobalState(() => {
   }
 
   async function GENERATE_FINAL_ROUTES(dynamicMenu: MenuTreeInfo) {
-    console.time('generatorDynamicRouter')
     const finalRoutes = effectAsyncRoutes(
       dynamicRoutes,
       dynamicMenu,
@@ -154,7 +153,6 @@ export const userPermissionHook = createGlobalState(() => {
       menuMap,
       cacheCurrentRouteJobMap
     )
-    console.timeEnd('generatorDynamicRouter')
     return finalRoutes
   }
   return {
