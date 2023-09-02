@@ -93,30 +93,27 @@ export const effectAsyncRoutes = (
 ) => {
   const ids: number[] = effectGetTreeMapId(dynamicMenu, menuMap)
   const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
-    // 判断非叶子结点
-    if (node.children && node.children.length) {
+    console.log(node)
+    if (node.meta?.ignoreRoute) {
       return true
-    } else if (node.children && !node.children.length) {
-      return false
-    } else {
-      // 判断叶子结点
-      if (hasPermission(node, ids)) {
-        /**
-         * 设置两个数据结构的对应关系并为RouteRecordRaw添加name
-         */
-        routeMap.set(node.meta!.menuId as number, node)
-        if (!node.name) {
-          node.name = Symbol(node.meta!.menuId as number)
-        }
-        node.beforeEnter = effectPermissionBeforeEnter(
-          node.meta!.menuId as number,
-          cacheCurrentRouteJobMap,
-          menuMap
-        )
-        return true
-      } else {
-        return false
+    } else if (hasPermission(node, ids)) {
+      /**
+       * 设置两个数据结构的对应关系并为RouteRecordRaw添加name
+       */
+      routeMap.set(node.meta!.menuId as number, node)
+      if (!node.name) {
+        node.name = Symbol(node.meta!.menuId as number)
       }
+      node.beforeEnter = effectPermissionBeforeEnter(
+        node.meta!.menuId as number,
+        cacheCurrentRouteJobMap,
+        menuMap
+      )
+      return true
+    } else if (node.children?.length) {
+      return true
+    } else {
+      return false
     }
   })
   return res
@@ -153,6 +150,7 @@ export const userPermissionHook = createGlobalState(() => {
       menuMap,
       cacheCurrentRouteJobMap
     )
+    console.log(finalRoutes, 'finalRoutes')
     return finalRoutes
   }
   return {

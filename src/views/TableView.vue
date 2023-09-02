@@ -1,13 +1,40 @@
 <template>
   <de-responsibility placeholder="切换岗位职能"></de-responsibility>
 
-  <div class="subpixel-antialiased"> 当前职能{{ _permissions!.jobName }} </div>
-
-  <h4>当前职能应该展示的Text</h4>
-  <div class="underline"> {{ _permissions!.resources![0].resource }} </div>
+  <el-table :data="tableData" :border="true" v-loading="isLoading" class="w-full md:w-auto mt-6">
+    <el-table-column prop="name" label="Name" width="120" />
+    <el-table-column prop="from" label="From" width="120" />
+    <el-table-column prop="email" label="Email" />
+    <el-table-column prop="address" label="Address" />
+    <el-table-column prop="string" label="star" width="120" />
+    <el-table-column fixed="right" label="Operations" width="120">
+      <template #default="scope">
+        <!-- <el-button link type="primary" size="small">Detail</el-button> -->
+        <el-button link type="primary" size="small" @click="handleEdit(scope.row)">Edit</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script lang="ts" setup>
-  const { currentRoute } = useRouter()
+  import { useAsyncState } from '@vueuse/core'
+  import { getListApi } from '@/api/table'
+  import type { ListInfo } from '~/types/api'
+  /**
+   * 通常情况下，我们使用当前职能id去获取当前职能对映的表单信息，然后渲染到页面上
+   */
+  const { currentRoute, push } = useRouter()
+
+  const handleEdit = (row: ListInfo) => {
+    push({ name: 'EditTable', params: { id: row.id } })
+  }
+
   const { _permissions } = currentRoute.value.meta
+  const { state: tableData, isLoading } = useAsyncState(
+    getListApi({
+      jobId: _permissions?.jobId!,
+      jobName: _permissions?.jobName!
+    }),
+    []
+  )
 </script>

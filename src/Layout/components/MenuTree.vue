@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-container">
     <el-scrollbar>
-      <el-menu :default-active="localMenuActive" class="el-menu-vertical" unique-opened router>
+      <el-menu :default-active="active" class="el-menu-vertical" unique-opened router>
         <sub-menu v-for="item in props.tree" :key="item.menuId" :node="item" />
       </el-menu>
     </el-scrollbar>
@@ -21,6 +21,8 @@
     const { currentRoute } = useRouter()
     CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId!)
   }
+
+  const active = computed(() => String(localMenuActive.value))
 
   watch(
     () => currentRoute.value.fullPath,

@@ -1,5 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+/**
+ * 需动态加载的权限路由
+ *   声明 menuId 或 ignoreRoute 来过滤权限路由与非强制绑定权限路由
+ */
+
 export const dynamicRoutes: RouteRecordRaw[] = [
   {
     path: '',
@@ -43,6 +48,12 @@ export const dynamicRoutes: RouteRecordRaw[] = [
             component: () => import(/* webpackChunkName: "nested3" */ '@/views/nested/menu3.vue')
           }
         ]
+      },
+      // Will not become an official route
+      {
+        path: 'nested4',
+        name: 'nested4',
+        component: () => import(/* webpackChunkName: "nested4" */ '@/views/nested/menu2.vue')
       }
     ]
   },
@@ -53,5 +64,13 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       menuId: 1110027
     },
     component: () => import(/* webpackChunkName: "TableView" */ '@/views/TableView.vue')
+  },
+  {
+    path: '/EditTable/:id',
+    name: 'EditTable',
+    meta: {
+      ignoreRoute: true
+    },
+    component: () => import(/* webpackChunkName: "EditTable" */ '@/views/other/EditTable.vue')
   }
 ]

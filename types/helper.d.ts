@@ -5,6 +5,7 @@ import type { Method, AxiosError, AxiosResponse, AxiosRequestConfig } from 'axio
 declare module 'vue-router' {
   interface RouteMeta {
     menuId?: number
+    ignoreRoute?: boolean
     _permissions?: PermissionRow
     _pressButtons?: PressButtonRow[]
   }

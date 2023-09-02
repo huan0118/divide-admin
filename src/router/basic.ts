@@ -3,6 +3,11 @@ import login from '@/views/LoginView.vue'
 import layout from '@/Layout/LayoutView.vue'
 import redirect from '@/Layout/RedirectView.vue'
 
+/**
+ * 基础路由
+ *    由于切换职能职能所对应的所有资源都将切换redirect为重新刷新页面职能设计
+ */
+
 export const basicRoutes: RouteRecordRaw[] = [
   {
     path: '/',
