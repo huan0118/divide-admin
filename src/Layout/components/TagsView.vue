@@ -21,7 +21,7 @@
             @contextmenu.prevent="openMenu(tag, $event)"
             @click="navigate"
           >
-            {{ tag?.meta?.title || tag.path }}
+            {{ tag?.meta?.title }}
           </span>
         </router-link>
       </div>
@@ -65,7 +65,7 @@
   import type { ElScrollbar } from 'element-plus'
   import type { RemovableRef } from '@vueuse/core'
 
-  const { multiTags, SET_TAG, CLEAN_TAG, DEL_OTHERS_TAG, DEL_TAG } = useMultiTagsStoreHook()
+  const { multiTags, CHANGE_TAG, CLEAN_TAG, DEL_OTHERS_TAG, DEL_TAG } = useMultiTagsStoreHook()
   const route = useRoute()
   const { currentRoute, replace, push } = useRouter()
 
@@ -102,7 +102,7 @@
   function addTags() {
     const { meta } = route
     if (meta?.affix) {
-      SET_TAG(currentRoute.value)
+      CHANGE_TAG(currentRoute.value)
     }
   }
   function closeAllTags() {

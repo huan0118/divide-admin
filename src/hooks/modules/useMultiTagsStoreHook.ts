@@ -5,18 +5,25 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 export const useMultiTagsStoreHook = createGlobalState(() => {
   const initData: RouteLocationNormalizedLoaded[] = []
   const multiTags = useStorage('tag-store', initData, sessionStorage)
+  const localAffixActive = useStorage('local-affix-active', 0, sessionStorage)
 
   /**
    * tag CURD
    */
-  async function SET_TAG(payload: RouteLocationNormalizedLoaded) {
-    const hasTag = multiTags.value.some((row) => row.fullPath === payload.fullPath)
-    if (!hasTag) {
-      const payloadRaw = { ...toRaw(payload) }
-      Reflect.deleteProperty(payloadRaw, 'matched')
-      Reflect.deleteProperty(payloadRaw, 'redirectedFrom')
+  async function CHANGE_TAG(payload: RouteLocationNormalizedLoaded) {
+    const index = multiTags.value.findIndex((row) => row.fullPath === payload.fullPath)
+
+    const payloadRaw = { ...toRaw(payload) }
+    Reflect.deleteProperty(payloadRaw, 'matched')
+    Reflect.deleteProperty(payloadRaw, 'redirectedFrom')
+
+    if (index != -1) {
+      multiTags.value.splice(index, 1, payloadRaw)
+    } else {
       multiTags.value.push(payloadRaw)
     }
+
+    localAffixActive.value = payloadRaw.meta._cid
   }
 
   function DEL_TAG(payload: RouteLocationNormalizedLoaded) {
@@ -36,5 +43,5 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
       multiTags.value.push(popItem)
     }
   }
-  return { multiTags, SET_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }
+  return { multiTags, localAffixActive, CHANGE_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }
 })

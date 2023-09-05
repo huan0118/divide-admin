@@ -6,8 +6,10 @@ declare module 'vue-router' {
   interface RouteMeta {
     menuId?: number
     ignoreRoute?: boolean
+    title: string
     _permissions?: PermissionRow
     _pressButtons?: PressButtonRow[]
+    _cid?: number
   }
 }
 

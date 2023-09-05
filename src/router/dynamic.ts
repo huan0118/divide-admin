@@ -11,7 +11,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     name: 'Welcome',
     meta: {
       affix: true,
-      title: 'Welcome',
+      title: '首页',
       menuId: 4123040
     },
     component: () => import(/* webpackChunkName: "DashboardView" */ '@/views/DashboardView.vue')
@@ -22,7 +22,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     meta: {
       affix: true,
       menuId: 2713025,
-      title: 'HomeView'
+      title: '权限配置'
     },
     component: () => import(/* webpackChunkName: "HomeView" */ '@/views/HomeView.vue')
   },
@@ -61,7 +61,9 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: '/TableView',
     name: 'TableView',
     meta: {
-      menuId: 1110027
+      affix: true,
+      menuId: 1110027,
+      title: '权限表格'
     },
     component: () => import(/* webpackChunkName: "TableView" */ '@/views/TableView.vue')
   },
@@ -69,7 +71,8 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: '/EditTable/:id',
     name: 'EditTable',
     meta: {
-      ignoreRoute: true
+      ignoreRoute: true,
+      title: '新建表单'
     },
     component: () => import(/* webpackChunkName: "EditTable" */ '@/views/other/EditTable.vue')
   }

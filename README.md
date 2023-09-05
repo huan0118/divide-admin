@@ -4,10 +4,6 @@
 
 `divide-admin` 是一款开源的前端数据级控制方案整合成的后台管理系统模版。使用了最新的 `Vue3`、`Vite`、`Element-Plus`、`TypeScript`、`vueuse`、`Tailwindcss` 等主流技术开发
 
-## 配套文档
-
-- 加紧赶工中
-
 ## 安装使用
 
 - 获取项目代码

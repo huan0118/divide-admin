@@ -29,7 +29,8 @@ export const basicRoutes: RouteRecordRaw[] = [
   {
     path: '/:notFoundPath(.*)*',
     meta: {
-      hidden: true
+      hidden: true,
+      title: '404'
     },
     component: () => import(/* webpackChunkName: "ErrPage" */ '@/Layout/ErrPage.vue')
   }

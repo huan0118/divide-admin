@@ -3,12 +3,14 @@ import { createGlobalState } from '@vueuse/shared'
 
 export const useLocalMenuActive = createGlobalState(() => {
   /**
-   * 当前激活的菜单
+   * 当前激活的左侧菜单
    */
-  const localMenuActive = useStorage('local-menu-active', -1, sessionStorage)
+  const localMenuActive = useStorage('local-menu-active', 0, sessionStorage)
 
   function CHANGE_LOCAL_ACTIVE(payload?: number) {
-    localMenuActive.value = payload
+    if (payload) {
+      localMenuActive.value = payload
+    }
   }
 
   return { localMenuActive, CHANGE_LOCAL_ACTIVE }

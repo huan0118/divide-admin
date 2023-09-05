@@ -89,28 +89,35 @@ export const effectAsyncRoutes = (
   dynamicMenu: MenuTreeInfo,
   routeMap: Map<number, RouteRecordRaw>,
   menuMap: Map<number, MenuRow>,
-  cacheCurrentRouteJobMap: Map<number, string | number>
+  cacheCurrentRouteJobMap: Map<number, string | number>,
+  cacheAffixMap: Map<number, RouteRecordRaw>
 ) => {
+  let Cid = 0
   const ids: number[] = effectGetTreeMapId(dynamicMenu, menuMap)
   const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
-    console.log(node)
-    if (node.meta?.ignoreRoute) {
-      return true
-    } else if (hasPermission(node, ids)) {
-      /**
-       * 设置两个数据结构的对应关系并为RouteRecordRaw添加name
-       */
-      routeMap.set(node.meta!.menuId as number, node)
-      if (!node.name) {
-        node.name = Symbol(node.meta!.menuId as number)
+    /**
+     * 对路由进行校验过滤并设置相关map
+     */
+    if (node.meta?.ignoreRoute || hasPermission(node, ids) || node.children?.length) {
+      const _cid = Cid++
+      if (node.meta?.menuId) {
+        routeMap.set(node.meta.menuId, node)
+
+        node.beforeEnter = effectPermissionBeforeEnter(
+          node.meta!.menuId,
+          cacheCurrentRouteJobMap,
+          menuMap
+        )
+      } else {
+        if (node.meta?.affix) {
+          node.meta._cid = _cid
+          cacheAffixMap.set(_cid, node)
+        }
       }
-      node.beforeEnter = effectPermissionBeforeEnter(
-        node.meta!.menuId as number,
-        cacheCurrentRouteJobMap,
-        menuMap
-      )
-      return true
-    } else if (node.children?.length) {
+      if (!node.name) {
+        node.name = Symbol(node.meta?.menuId || _cid)
+      }
+
       return true
     } else {
       return false
@@ -129,6 +136,7 @@ export const userPermissionHook = createGlobalState(() => {
   const routeMap = new Map<number, RouteRecordRaw>()
   const menuMap = new Map<number, MenuRow>()
   const cacheCurrentRouteJobMap = new Map<number, string | number>()
+  const cacheAffixMap = new Map<number, RouteRecordRaw>()
 
   async function GET_MENU(token: string) {
     const { data } = await getMenu(token)
@@ -148,9 +156,9 @@ export const userPermissionHook = createGlobalState(() => {
       dynamicMenu,
       routeMap,
       menuMap,
-      cacheCurrentRouteJobMap
+      cacheCurrentRouteJobMap,
+      cacheAffixMap
     )
-    console.log(finalRoutes, 'finalRoutes')
     return finalRoutes
   }
   return {
@@ -159,6 +167,7 @@ export const userPermissionHook = createGlobalState(() => {
     dynamicNoopList,
     routeMap,
     cacheCurrentRouteJobMap,
+    cacheAffixMap,
     GET_MENU,
     CLEAN_DYNAMIC_MENU_DATA,
     GENERATE_FINAL_ROUTES

@@ -20,7 +20,13 @@ const pathResolve = (path: string): string => resolve(process.cwd(), path)
 export default defineConfig({
   base: '/divide-admin/',
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        nested: resolve(__dirname, '404.html')
+      }
+    }
   },
   plugins: [
     vue(),
