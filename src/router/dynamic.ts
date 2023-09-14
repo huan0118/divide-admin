@@ -71,6 +71,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: '/EditTable/:id',
     name: 'EditTable',
     meta: {
+      affix: true,
       ignoreRoute: true,
       title: '新建表单'
     },

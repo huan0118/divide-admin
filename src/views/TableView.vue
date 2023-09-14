@@ -25,11 +25,12 @@
    */
   const { currentRoute, push } = useRouter()
 
+  const { _permissions } = currentRoute.value.meta
+
   const handleEdit = (row: ListInfo) => {
     push({ name: 'EditTable', params: { id: row.id } })
   }
 
-  const { _permissions } = currentRoute.value.meta
   const { state: tableData, isLoading } = useAsyncState(
     getListApi({
       jobId: _permissions?.jobId!,

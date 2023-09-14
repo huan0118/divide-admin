@@ -92,11 +92,11 @@ export const effectAsyncRoutes = (
   cacheCurrentRouteJobMap: Map<number, string | number>,
   cacheAffixMap: Map<number, RouteRecordRaw>
 ) => {
-  let Cid = 0
+  let Cid = 1
   const ids: number[] = effectGetTreeMapId(dynamicMenu, menuMap)
   const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
     /**
-     * 对路由进行校验过滤并设置相关map
+     * 从叶子节点开始判断收敛
      */
     if (node.meta?.ignoreRoute || hasPermission(node, ids) || node.children?.length) {
       const _cid = Cid++

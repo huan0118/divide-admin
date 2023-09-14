@@ -8,9 +8,9 @@ import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
 const { userInfo, DEL_USER_INFO } = useUserStoreHook()
 const { dynamicMenu, dynamicNoopList, routeMap, GET_MENU, GENERATE_FINAL_ROUTES } =
   userPermissionHook()
-const { localAffixActive, multiTags } = useMultiTagsStoreHook()
+const { multiTags } = useMultiTagsStoreHook()
 const whiteList = ['/login', '/notFoundPath'] // 白名单
-const { localMenuActive } = useLocalMenuActive()
+const { localMenuActive, localAffixActive, localEndActiveType } = useLocalMenuActive()
 
 router.beforeEach(async (to, from) => {
   const hasToken = userInfo.value.accessToken
@@ -31,16 +31,17 @@ router.beforeEach(async (to, from) => {
           for (const row of accessRoutes) {
             dynamicNoopList.push(router.addRoute('Dashboard', row))
           }
+          let routeCache: unknown = null
 
-          if (localAffixActive.value) {
-            const crossCache = multiTags.value.find(
-              (row) => row.meta?._cid === localAffixActive.value
-            )
-            if (crossCache) {
-              return crossCache.fullPath
+          if (localEndActiveType.value) {
+            if (localEndActiveType.value === 'nav') {
+              routeCache = routeMap.get(localMenuActive.value)
+            } else {
+              routeCache = multiTags.value.find(
+                (row) => row.meta?._cid === localAffixActive.value
+              )?.fullPath
             }
           }
-          const routeCache = routeMap.get(localMenuActive.value)
           if (routeCache) {
             return routeCache
           } else if (accessRoutes.length) {

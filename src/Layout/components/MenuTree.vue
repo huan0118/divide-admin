@@ -17,17 +17,19 @@
   const { currentRoute } = useRouter()
   const { localMenuActive, CHANGE_LOCAL_ACTIVE } = useLocalMenuActive()
 
-  if (!localMenuActive.value) {
-    const { currentRoute } = useRouter()
-    CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId!)
-  }
-
   const active = computed(() => String(localMenuActive.value))
 
   watch(
     () => currentRoute.value.fullPath,
     () => {
-      CHANGE_LOCAL_ACTIVE(currentRoute.value.meta.menuId!)
+      if (currentRoute.value.meta.menuId) {
+        CHANGE_LOCAL_ACTIVE('nav', currentRoute.value.meta.menuId)
+      } else if (currentRoute.value.meta.affix) {
+        CHANGE_LOCAL_ACTIVE('affix', currentRoute.value.meta._cid!)
+      }
+    },
+    {
+      immediate: true
     }
   )
 </script>

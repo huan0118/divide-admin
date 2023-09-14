@@ -5,7 +5,6 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 export const useMultiTagsStoreHook = createGlobalState(() => {
   const initData: RouteLocationNormalizedLoaded[] = []
   const multiTags = useStorage('tag-store', initData, sessionStorage)
-  const localAffixActive = useStorage('local-affix-active', 0, sessionStorage)
 
   /**
    * tag CURD
@@ -22,8 +21,6 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
     } else {
       multiTags.value.push(payloadRaw)
     }
-
-    localAffixActive.value = payloadRaw.meta._cid
   }
 
   function DEL_TAG(payload: RouteLocationNormalizedLoaded) {
@@ -43,5 +40,5 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
       multiTags.value.push(popItem)
     }
   }
-  return { multiTags, localAffixActive, CHANGE_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }
+  return { multiTags, CHANGE_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }
 })
