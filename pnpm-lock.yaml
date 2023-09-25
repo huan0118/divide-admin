@@ -24,15 +24,6 @@ dependencies:
     version: registry.npmmirror.com/vue-router@4.2.2(vue@3.3.4)
 
 devDependencies:
-  '@iconify-json/ep':
-    specifier: ^1.1.10
-    version: 1.1.10
-  '@iconify-json/ic':
-    specifier: ^1.1.14
-    version: 1.1.14
-  '@iconify-json/tabler':
-    specifier: ^1.1.87
-    version: 1.1.87
   '@iconify/vue':
     specifier: ^4.1.1
     version: 4.1.1(vue@3.3.4)
@@ -715,24 +706,6 @@ packages:
     dependencies:
       '@floating-ui/core': 1.3.1
     dev: false
-
-  /@iconify-json/ep@1.1.10:
-    resolution: {integrity: sha512-1N3H28hbulsw3UNZjAZ1c7BhK9mLiw8VrngQc58xNQ7dnzaUgtKN81aqkrZ9ffDXcfJGL3Rk9Yc3/QrSSI24sg==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: true
-
-  /@iconify-json/ic@1.1.14:
-    resolution: {integrity: sha512-vbATa9uwb9pIsRWQ+iXObQCgLTePk/0vo4shBr3Td0GnTjsAU/7VUGTkrZFVf5vpgiG6OsXkcKMPzBPvt966sg==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: true
-
-  /@iconify-json/tabler@1.1.87:
-    resolution: {integrity: sha512-JkAZOAQDtHjQ4cOZbgJLOwH6yVsng8M6dEju7me5/5TOb9TlOCbSsKdHy2hUvr5wEgZAtCxvEStBmU/IKOo3Pw==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: true
 
   /@iconify/types@2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
