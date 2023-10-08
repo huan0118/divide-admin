@@ -2,10 +2,11 @@ import { type RouteRecordRaw } from 'vue-router'
 import login from '@/views/LoginView.vue'
 import layout from '@/Layout/LayoutView.vue'
 import redirect from '@/Layout/RedirectView.vue'
+import ErrPage from '@/Layout/ErrPage.vue'
 
 /**
  * 基础路由
- *    由于切换职能职能所对应的所有资源都将切换redirect为重新刷新页面职能设计
+ *  Dashboard 作为根路由承载权限过滤后的路由
  */
 
 export const basicRoutes: RouteRecordRaw[] = [
@@ -32,6 +33,6 @@ export const basicRoutes: RouteRecordRaw[] = [
       hidden: true,
       title: '404'
     },
-    component: () => import(/* webpackChunkName: "ErrPage" */ '@/Layout/ErrPage.vue')
+    component: ErrPage
   }
 ]

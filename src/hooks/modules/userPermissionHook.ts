@@ -84,14 +84,14 @@ function treeFilter(tree: RouteRecordRaw[], func: Function) {
     })
 }
 
-export const effectAsyncRoutes = (
+function effectAsyncRoutes(
   dynamicRoutes: RouteRecordRaw[],
   dynamicMenu: MenuTreeInfo,
   routeMap: Map<number, RouteRecordRaw>,
   menuMap: Map<number, MenuRow>,
   cacheCurrentRouteJobMap: Map<number, string | number>,
   cacheAffixMap: Map<number, RouteRecordRaw>
-) => {
+) {
   let Cid = 1
   const ids: number[] = effectGetTreeMapId(dynamicMenu, menuMap)
   const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
@@ -131,9 +131,13 @@ export const userPermissionHook = createGlobalState(() => {
    * 菜单数据与菜单映射
    */
   const initialMenuInfo: MenuTreeInfo = []
+  /**  服务端返回的菜单数据 */
   const dynamicMenu = shallowRef(initialMenuInfo)
+  /**  addRoute返回的函数列表 */
   const dynamicNoopList: AnyFn[] = []
+  /**  记录menuId与过滤后的路由映射 */
   const routeMap = new Map<number, RouteRecordRaw>()
+  /**  记录menuId与服务端菜单项映射 */
   const menuMap = new Map<number, MenuRow>()
   const cacheCurrentRouteJobMap = new Map<number, string | number>()
   const cacheAffixMap = new Map<number, RouteRecordRaw>()
@@ -145,8 +149,11 @@ export const userPermissionHook = createGlobalState(() => {
   }
 
   function CLEAN_DYNAMIC_MENU_DATA() {
-    dynamicMenu.value = []
     routeMap.clear()
+    menuMap.clear()
+    cacheCurrentRouteJobMap.clear()
+    cacheAffixMap.clear()
+    dynamicMenu.value = []
     dynamicNoopList.length = 0
   }
 

@@ -17,13 +17,21 @@
 
 <script lang="ts" setup>
   import { reactive } from 'vue'
-
+  const { currentRoute } = useRouter()
+  const { jobId } = currentRoute.value.query
+  const { id } = currentRoute.value.params
   const form = reactive({
     name: '',
     region: ''
   })
-
+  //currentRoute 为全局单例对象 注意取值
   const onSubmit = () => {
-    console.log('submit!')
+    setTimeout(() => {
+      console.log('jobId-1 => ', currentRoute.value.query.jobId)
+      console.log('form id-1 =>', currentRoute.value.params.id)
+
+      console.log('jobId-2 => ', jobId)
+      console.log('form id-2 =>', id)
+    }, 10000)
   }
 </script>

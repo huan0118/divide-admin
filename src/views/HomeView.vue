@@ -12,4 +12,6 @@
 <script lang="ts" setup>
   const { currentRoute } = useRouter()
   const { _permissions } = currentRoute.value.meta
+
+  console.log('other page jobId => ', _permissions?.jobId!)
 </script>

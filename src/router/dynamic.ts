@@ -73,7 +73,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     meta: {
       affix: true,
       ignoreRoute: true,
-      title: '新建表单'
+      title: '修改表单'
     },
     component: () => import(/* webpackChunkName: "EditTable" */ '@/views/other/EditTable.vue')
   }

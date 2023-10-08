@@ -27,8 +27,18 @@
 
   const { _permissions } = currentRoute.value.meta
 
+  onMounted(() => {
+    setTimeout(() => {
+      console.log('onMounted jobId => ', _permissions?.jobId!)
+    }, 8000)
+  })
+
   const handleEdit = (row: ListInfo) => {
-    push({ name: 'EditTable', params: { id: row.id } })
+    push({
+      name: 'EditTable',
+      params: { id: row.id },
+      query: { jobId: _permissions?.jobId! }
+    })
   }
 
   const { state: tableData, isLoading } = useAsyncState(
