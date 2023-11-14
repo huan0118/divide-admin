@@ -1,23 +1,18 @@
 <template>
-  <el-container class="app-wrapper">
-    <el-aside class="app-aside">
+  <div class="flex h-screen">
+    <div class="flex-none basis-52">
       <menu-tree :tree="dynamicMenu" />
-    </el-aside>
-
-    <el-container>
-      <el-header class="app-header">
-        <nav-bar></nav-bar>
-        <tags-view></tags-view>
-      </el-header>
-      <el-main class="main-container">
+    </div>
+    <div class="flex-1 max-h-screen">
+      <nav-bar></nav-bar>
+      <tags-view></tags-view>
+      <div class="border-box p-1" style="height: calc(100vh - 75px)">
         <el-scrollbar>
-          <div class="main-box">
-            <router-view :key="$route.fullPath"></router-view>
-          </div>
+          <router-view :key="$route.fullPath"></router-view>
         </el-scrollbar>
-      </el-main>
-    </el-container>
-  </el-container>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

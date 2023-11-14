@@ -1,0 +1,5 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $menu: (
+    'border-color': transparent
+  )
+);

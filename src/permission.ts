@@ -45,7 +45,7 @@ router.beforeEach(async (to, from) => {
           if (routeCache) {
             return routeCache
           } else if (accessRoutes.length) {
-            return accessRoutes[0].path
+            return accessRoutes[0]
           } else {
             return true
           }

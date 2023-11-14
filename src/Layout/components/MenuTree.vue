@@ -1,7 +1,7 @@
 <template>
-  <div class="sidebar-container">
+  <div class="h-full shadow-xl">
     <el-scrollbar>
-      <el-menu :default-active="active" class="el-menu-vertical" unique-opened router>
+      <el-menu :default-active="active" class="scrollbar-menu-vertical" unique-opened router>
         <sub-menu v-for="item in props.tree" :key="item.menuId" :node="item" />
       </el-menu>
     </el-scrollbar>

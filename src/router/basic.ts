@@ -1,6 +1,5 @@
 import { type RouteRecordRaw } from 'vue-router'
 import login from '@/views/LoginView.vue'
-import layout from '@/Layout/LayoutView.vue'
 import redirect from '@/Layout/RedirectView.vue'
 import ErrPage from '@/Layout/ErrPage.vue'
 
@@ -13,7 +12,7 @@ export const basicRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Dashboard',
-    component: layout,
+    component: () => import(/* webpackChunkName: "Layout" */ '@/Layout/LayoutView.vue'),
     children: [
       {
         path: '/redirect/:path(.*)',

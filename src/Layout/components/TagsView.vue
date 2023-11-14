@@ -1,5 +1,5 @@
 <template>
-  <div class="border-b border-regal-black/60">
+  <div class="shadow-lg">
     <el-scrollbar ref="scrollbarRef">
       <div class="flex p-1" ref="innerRef">
         <router-link

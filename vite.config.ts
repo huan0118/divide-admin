@@ -49,7 +49,9 @@ export default defineConfig({
         /.vue?vue/ // .vue
       ],
       resolvers: [
-        ElementPlusResolver(),
+        ElementPlusResolver({
+          importStyle: 'sass'
+        }),
         IconsResolver({
           enabledCollections: ['ep', 'tabler']
         })
@@ -73,7 +75,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         // 配置全局sass变量注入
-        additionalData: '@import "@/styles/variable.scss";'
+        additionalData: '@use "@/styles/theme.scss" as *;'
       }
     },
     postcss: {

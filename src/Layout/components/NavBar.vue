@@ -1,6 +1,6 @@
 <template>
-  <section class="app-navbar">
-    <div class="right-menu">
+  <div class="flex flex-row-reverse items-center border-b border-regal-black/60">
+    <div class="flex items-center">
       <span class="name">{{ userInfo.username }}</span>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
@@ -15,7 +15,7 @@
         </template>
       </el-dropdown>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
