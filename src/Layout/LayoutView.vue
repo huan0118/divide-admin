@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen">
+  <div class="flex h-screen overflow-hidden">
     <div class="flex-none basis-52">
       <menu-tree :tree="dynamicMenu" />
     </div>

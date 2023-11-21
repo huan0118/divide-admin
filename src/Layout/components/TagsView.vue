@@ -1,7 +1,7 @@
 <template>
   <div class="shadow-lg">
     <el-scrollbar ref="scrollbarRef">
-      <div class="flex p-1" ref="innerRef">
+      <div class="flex p-1 select-none" ref="innerRef">
         <router-link
           v-for="tag in multiTags"
           :key="tag.fullPath"
