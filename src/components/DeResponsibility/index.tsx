@@ -29,13 +29,13 @@ export default defineComponent({
       replace({ path: '/redirect' + fullPath, query })
     }
     return () => (
-      <div>
+      <>
         <el-select {...attrs} vModel={defaultValue.value} onChange={handleChange}>
           {permissions!.map((row) => (
             <el-option key={row.jobId} label={row.jobName} value={row.jobId}></el-option>
           ))}
         </el-select>
-      </div>
+      </>
     )
   }
 })
