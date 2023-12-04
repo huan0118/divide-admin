@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-  const locale = zhCn
-  const zIndex = 3000
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+const locale = zhCn
+const zIndex = 3000
 </script>
 
 <template>
