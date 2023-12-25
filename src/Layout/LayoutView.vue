@@ -8,11 +8,11 @@
       <tags-view></tags-view>
       <div class="border-box p-1" style="height: calc(100vh - 75px)">
         <el-scrollbar>
-          <!-- <router-view :key="$route.fullPath"></router-view> -->
           <router-view v-slot="{ Component }">
             <keep-alive :exclude="[/^redirect/]">
-              <component :is="Component" />
+              <component :is="Component" :key="$route.fullPath" v-if="$route.meta.ignoreRoute" />
             </keep-alive>
+            <component :is="Component" :key="$route.fullPath" v-if="!$route.meta.ignoreRoute" />
           </router-view>
         </el-scrollbar>
       </div>

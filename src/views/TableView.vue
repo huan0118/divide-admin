@@ -1,7 +1,7 @@
 <template>
   <de-responsibility placeholder="切换岗位职能"></de-responsibility>
 
-  <!-- <el-table :data="tableData" :border="true" v-loading="isLoading" class="w-full md:w-auto mt-6">
+  <el-table :data="tableData" :border="true" v-loading="isLoading" class="w-full md:w-auto mt-6">
     <el-table-column prop="name" label="Name" width="120" />
     <el-table-column prop="from" label="From" width="120" />
     <el-table-column prop="email" label="Email" />
@@ -12,9 +12,7 @@
         <el-button type="primary" size="small" @click="handleEdit(scope.row)">Edit</el-button>
       </template>
     </el-table-column>
-  </el-table> -->
-
-  <el-input v-model="val"></el-input>
+  </el-table>
 </template>
 
 <script lang="ts" setup>
@@ -31,22 +29,8 @@ const { currentRoute, push } = useRouter()
 
 const { _permissions } = currentRoute.value.meta
 
-const val = ref('')
-onActivated(() => {
-  // 调用时机为首次挂载
-  // 以及每次从缓存中被重新插入时
-  console.log('onActivated jobId => ', _permissions?.jobName!)
-})
-
-onDeactivated(() => {
-  // 在从 DOM 上移除、进入缓存
-  // 以及组件卸载时调用
-  console.log('onDeactivated jobId => ', _permissions?.jobName!)
-})
 onMounted(() => {
-  setTimeout(() => {
-    console.log('onMounted jobId => ', _permissions?.jobId!)
-  }, 8000)
+  console.log('onMounted jobId => ', _permissions?.jobName!)
 })
 
 const handleEdit = (row: ListInfo) => {
