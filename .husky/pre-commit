@@ -3,3 +3,4 @@
 
 # Format and submit code according to lintstagedrc.js configuration
 pnpm exec lint-staged
+pnpm exec pretty-quick --staged
