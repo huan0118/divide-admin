@@ -115,7 +115,7 @@ function effectAsyncRoutes(
         }
       }
       if (!node.name) {
-        node.name = Symbol(node.meta?.menuId || _cid)
+        node.name = (node.path.split('/').pop() ?? '').toLocaleUpperCase()
       }
 
       return true
