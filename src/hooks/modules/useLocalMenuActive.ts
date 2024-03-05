@@ -5,15 +5,21 @@ export const useLocalMenuActive = createGlobalState(() => {
   /**
    * 当前激活的左侧菜单
    */
-  const localMenuActive = useStorage('local-menu-active', 0, sessionStorage)
-  const localAffixActive = useStorage('local-affix-active', 0, sessionStorage)
-  const localEndActiveType = useStorage('local-end-active-type', '', sessionStorage)
+  const localMenuActive = useStorage<number>('local-menu-active', NaN, sessionStorage)
+  const localAffixActive = useStorage<string>('local-affix-active', '', sessionStorage)
+  const localEndActiveType = useStorage<'nav' | 'affix' | ''>(
+    'local-end-active-type',
+    '',
+    sessionStorage
+  )
 
-  function CHANGE_LOCAL_ACTIVE(type: 'nav' | 'affix', payload: number) {
+  function CHANGE_LOCAL_ACTIVE(type: 'nav' | 'affix', payload: string | number) {
+    console.log('CHANGE_LOCAL_ACTIVE', type, payload)
     if (type === 'nav') {
-      localMenuActive.value = payload
+      localMenuActive.value = payload as number
     } else if (type === 'affix') {
-      localAffixActive.value = payload
+      console.log(payload)
+      localAffixActive.value = payload as string
     }
 
     localEndActiveType.value = type

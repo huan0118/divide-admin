@@ -30,14 +30,23 @@ export const useMultiTagsStoreHook = createGlobalState(() => {
   }
 
   function CLEAN_TAG() {
-    multiTags.value = []
+    for (let index = 0; index < multiTags.value.length; index++) {
+      const row = multiTags.value[index]
+      if (!row.meta.allAffix) {
+        multiTags.value.splice(index, 1)
+        index--
+      }
+    }
   }
 
   function DEL_OTHERS_TAG(payload: RouteLocationNormalizedLoaded) {
     const popItem = multiTags.value.find((row) => row.fullPath === payload.fullPath)
+    console.log(popItem)
     if (popItem) {
-      multiTags.value = []
-      multiTags.value.push(popItem)
+      CLEAN_TAG()
+      if (!popItem.meta.allAffix) {
+        multiTags.value.push(popItem)
+      }
     }
   }
   return { multiTags, CHANGE_TAG, DEL_TAG, CLEAN_TAG, DEL_OTHERS_TAG }

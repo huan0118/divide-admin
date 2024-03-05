@@ -24,8 +24,8 @@
     () => {
       if (currentRoute.value.meta.menuId) {
         CHANGE_LOCAL_ACTIVE('nav', currentRoute.value.meta.menuId)
-      } else if (currentRoute.value.meta.affix) {
-        CHANGE_LOCAL_ACTIVE('affix', currentRoute.value.meta._cid!)
+      } else if (currentRoute.value.meta.affix || currentRoute.value.meta.allAffix) {
+        CHANGE_LOCAL_ACTIVE('affix', currentRoute.value.fullPath)
       }
     },
     {

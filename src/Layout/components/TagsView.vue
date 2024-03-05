@@ -101,7 +101,7 @@
 
   function addTags() {
     const { meta } = route
-    if (meta?.affix) {
+    if (meta?.affix || meta?.allAffix) {
       CHANGE_TAG(currentRoute.value)
     }
   }
@@ -120,6 +120,9 @@
   }
 
   function closeSelectedTag(view: RouteLocationNormalizedLoaded) {
+    if (view.meta.allAffix) {
+      return
+    }
     const multiTags = DEL_TAG(view)
     if (isActive(view)) {
       toLastView(multiTags, view)

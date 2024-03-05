@@ -35,11 +35,9 @@ router.beforeEach(async (to, from) => {
 
           if (localEndActiveType.value) {
             if (localEndActiveType.value === 'nav') {
-              routeCache = routeMap.get(localMenuActive.value)
+              routeCache = routeMap.get(+localMenuActive.value)
             } else {
-              routeCache = multiTags.value.find(
-                (row) => row.meta?._cid === localAffixActive.value
-              )?.fullPath
+              routeCache = localAffixActive.value
             }
           }
           if (routeCache) {

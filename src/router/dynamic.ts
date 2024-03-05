@@ -10,9 +10,9 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     path: '',
     name: 'Welcome',
     meta: {
-      affix: true,
+      allAffix: true,
       title: '首页',
-      menuId: 4123040
+      ignoreRoute: true
     },
     component: () => import(/* webpackChunkName: "DashboardView" */ '@/views/DashboardView.vue')
   },
