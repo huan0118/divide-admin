@@ -3,12 +3,17 @@ import { ElMessage } from 'element-plus'
 import { useUserStoreHook } from '@/hooks/modules/userHook'
 import { userPermissionHook } from '@/hooks/modules/userPermissionHook'
 import { useLocalMenuActive } from '@/hooks/modules/useLocalMenuActive'
-import { useMultiTagsStoreHook } from '@/hooks/modules/useMultiTagsStoreHook'
+import type { RouteRecordRaw } from 'vue-router'
 
 const { userInfo, DEL_USER_INFO } = useUserStoreHook()
-const { dynamicMenu, dynamicNoopList, routeMap, GET_MENU, GENERATE_FINAL_ROUTES } =
-  userPermissionHook()
-const { multiTags } = useMultiTagsStoreHook()
+const {
+  dynamicMenu,
+  dynamicNoopList,
+  routeMap,
+  GET_MENU,
+  GENERATE_FINAL_ROUTES,
+  CLEAN_DYNAMIC_MENU_DATA
+} = userPermissionHook()
 const whiteList = ['/login', '/notFoundPath'] // 白名单
 const { localMenuActive, localAffixActive, localEndActiveType } = useLocalMenuActive()
 
@@ -31,11 +36,12 @@ router.beforeEach(async (to, from) => {
           for (const row of accessRoutes) {
             dynamicNoopList.push(router.addRoute('Dashboard', row))
           }
-          let routeCache: unknown = null
+          let routeCache: RouteRecordRaw | string | null = null
 
           if (localEndActiveType.value) {
             if (localEndActiveType.value === 'nav') {
-              routeCache = routeMap.get(+localMenuActive.value)
+              routeCache =
+                routeMap.get(+localMenuActive.value) || `/noRolePage?redirectFrom=${to.path}`
             } else {
               routeCache = localAffixActive.value
             }
@@ -52,6 +58,7 @@ router.beforeEach(async (to, from) => {
           console.warn(error)
           console.groupEnd()
           DEL_USER_INFO()
+          CLEAN_DYNAMIC_MENU_DATA()
           ElMessage.error('菜单初始化失败')
           try {
             if (whiteList.indexOf(from.path) !== -1) {

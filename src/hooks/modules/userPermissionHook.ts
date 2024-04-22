@@ -89,17 +89,14 @@ function effectAsyncRoutes(
   dynamicMenu: MenuTreeInfo,
   routeMap: Map<number, RouteRecordRaw>,
   menuMap: Map<number, MenuRow>,
-  cacheCurrentRouteJobMap: Map<number, string | number>,
-  cacheAffixMap: Map<number, RouteRecordRaw>
+  cacheCurrentRouteJobMap: Map<number, string | number>
 ) {
-  let Cid = 1
   const ids: number[] = effectGetTreeMapId(dynamicMenu, menuMap)
   const res: RouteRecordRaw[] = treeFilter(dynamicRoutes, (node: RouteRecordRaw) => {
     /**
      * 从叶子节点开始判断收敛
      */
     if (node.meta?.ignoreRoute || hasPermission(node, ids) || node.children?.length) {
-      const _cid = Cid++
       if (node.meta?.menuId) {
         routeMap.set(node.meta.menuId, node)
 
@@ -108,11 +105,6 @@ function effectAsyncRoutes(
           cacheCurrentRouteJobMap,
           menuMap
         )
-      } else {
-        if (node.meta?.affix) {
-          node.meta._cid = _cid
-          cacheAffixMap.set(_cid, node)
-        }
       }
       if (!node.name) {
         node.name = (node.path.split('/').pop() ?? '').toLocaleUpperCase()
@@ -140,7 +132,6 @@ export const userPermissionHook = createGlobalState(() => {
   /**  记录menuId与服务端菜单项映射 */
   const menuMap = new Map<number, MenuRow>()
   const cacheCurrentRouteJobMap = new Map<number, string | number>()
-  const cacheAffixMap = new Map<number, RouteRecordRaw>()
 
   async function GET_MENU(token: string) {
     const { data } = await getMenu(token)
@@ -152,7 +143,6 @@ export const userPermissionHook = createGlobalState(() => {
     routeMap.clear()
     menuMap.clear()
     cacheCurrentRouteJobMap.clear()
-    cacheAffixMap.clear()
     dynamicMenu.value = []
     dynamicNoopList.length = 0
   }
@@ -163,8 +153,7 @@ export const userPermissionHook = createGlobalState(() => {
       dynamicMenu,
       routeMap,
       menuMap,
-      cacheCurrentRouteJobMap,
-      cacheAffixMap
+      cacheCurrentRouteJobMap
     )
     return finalRoutes
   }
@@ -174,7 +163,6 @@ export const userPermissionHook = createGlobalState(() => {
     dynamicNoopList,
     routeMap,
     cacheCurrentRouteJobMap,
-    cacheAffixMap,
     GET_MENU,
     CLEAN_DYNAMIC_MENU_DATA,
     GENERATE_FINAL_ROUTES
